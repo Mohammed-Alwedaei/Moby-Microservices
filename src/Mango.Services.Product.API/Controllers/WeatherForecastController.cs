@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Moby.Services.Product.API;
 
-namespace Mango.Services.Product.API.Controllers
+namespace Moby.Services.Product.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

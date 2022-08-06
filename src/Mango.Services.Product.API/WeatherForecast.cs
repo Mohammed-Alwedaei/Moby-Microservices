@@ -1,4 +1,4 @@
-namespace Mango.Services.Product.API
+namespace Moby.Services.Product.API
 {
     public class WeatherForecast
     {
