@@ -1,17 +1,44 @@
 using Microsoft.EntityFrameworkCore;
 using Moby.Services.Product.API.DbContexts;
+using Moby.Services.Product.API.Mapper;
+using Moby.Services.Product.API.Repository;
+using Moby.Services.Product.API.Repository.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+/* Open API (Swagger) Configuration Start */
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/* Open API (Swagger) Configuration End */
+
+/* Database (EF6) Dependency Injection (DI) Configuration Start */
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+/* Database (EF6) Dependency Injection (DI) Configuration End */
+
+/* Dependency Injection (DI) Configuration Start */
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+/* Dependency Injection (DI) Configuration End */
+
+/* Automapper Configuration Start */
+
+var mapper = MapperConfig.RegisterMaps().CreateMapper();
+
+builder.Services.AddSingleton(mapper);
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+/* Automapper Configuration End */
 
 var app = builder.Build();
 
