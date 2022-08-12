@@ -1,0 +1,53 @@
+﻿@page "/fetchdata"
+@using Moby.Web.Client.Models
+@using Moby.Web.Client.Services.IServices
+@using Newtonsoft.Json
+@inject IProductService ProductService
+
+<PageTitle>Our Products</PageTitle>
+
+<h1>Products</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (!Products.Any())
+{
+    <div class="spinner-border"></div>
+}
+else
+{
+    <table class="table table-borderless table-striped shadow-lg rounded-3 overflow-hidden">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var product in Products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Description.Substring(0, 30)</td>
+                    <td>@product.Category</td>
+                    <td>@product.Price.ToString("c")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ProductDto> Products = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await ProductService.GetProductsAsync<ResponseDto>();
+
+        if (response.Results is not null || response.IsSuccess is not false)
+            Products = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Results));
+    }
+}

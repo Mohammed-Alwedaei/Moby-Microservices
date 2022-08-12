@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Services.Product.API", "Mango.Services.Product.API\Moby.Services.Product.API.csproj", "{68638F93-3539-40BE-844B-5EC7D62FACDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moby.Web.Client", "Moby.Web.Client\Moby.Web.Client.csproj", "{572BEE70-9A5F-466E-A307-C5DC77043BEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,12 +21,17 @@ Global
 		{68638F93-3539-40BE-844B-5EC7D62FACDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68638F93-3539-40BE-844B-5EC7D62FACDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68638F93-3539-40BE-844B-5EC7D62FACDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{572BEE70-9A5F-466E-A307-C5DC77043BEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{572BEE70-9A5F-466E-A307-C5DC77043BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{572BEE70-9A5F-466E-A307-C5DC77043BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{572BEE70-9A5F-466E-A307-C5DC77043BEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{68638F93-3539-40BE-844B-5EC7D62FACDA} = {8DDBC95C-CC4A-4181-A2D5-B9A47AB32786}
+		{572BEE70-9A5F-466E-A307-C5DC77043BEC} = {B8E36A2F-0DF0-4750-9416-257B8E6FF22A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81957DBB-88CD-49C8-80A1-BE42B5FDE965}
