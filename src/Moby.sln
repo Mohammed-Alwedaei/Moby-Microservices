@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Services.Product.API", "Mango.Services.Product.API\Moby.Services.Product.API.csproj", "{68638F93-3539-40BE-844B-5EC7D62FACDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moby.Web.Client", "Moby.Web.Client\Moby.Web.Client.csproj", "{572BEE70-9A5F-466E-A307-C5DC77043BEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Web.Client", "Moby.Web.Client\Moby.Web.Client.csproj", "{572BEE70-9A5F-466E-A307-C5DC77043BEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
