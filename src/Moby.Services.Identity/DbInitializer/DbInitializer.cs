@@ -51,7 +51,7 @@ namespace Moby.Services.Identity.DbInitializer
 
         public async Task CreateUser(ApplicationUserModel user, string role)
         {
-            await _userManager.CreateAsync(user, $"{user.FirstName}@123");
+            await _userManager.CreateAsync(user, $"TestUser@123");
             await _userManager.AddToRoleAsync(user, role);
 
             await _userManager.AddClaimsAsync(user, new Claim[]

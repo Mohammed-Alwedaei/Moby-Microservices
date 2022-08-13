@@ -43,8 +43,8 @@ namespace Moby.Services.Identity
                     new Secret("secret".Sha512())
                 },
                 AllowedGrantTypes = GrantTypes.Code,
-                RedirectUris = { "https://localhost:7018/signin-oidc" },
-                PostLogoutRedirectUris = { "https://localhost:7018/signout-callback-oidc" },
+                RedirectUris = { "https://localhost:7085/signin-oidc" },
+                PostLogoutRedirectUris = { "https://localhost:7085/signout-callback-oidc" },
                 AllowedScopes =
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
