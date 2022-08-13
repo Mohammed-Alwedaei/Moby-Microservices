@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moby.Services.Identity;
 using Moby.Services.Identity.DbContexts;
+using Moby.Services.Identity.DbInitializer;
 using Moby.Services.Identity.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +33,15 @@ var duendeIdentity = builder.Services.AddIdentityServer(options =>
 
 duendeIdentity.AddDeveloperSigningCredential();
 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+
+var initializerService = scope.ServiceProvider.GetService<IDbInitializer>();
+
+initializerService.InitializeAsync();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -54,3 +63,5 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+
