@@ -8,6 +8,12 @@
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+
+
     <link href="Moby.Web.Client.styles.css" rel="stylesheet" />
 </head>
 
@@ -19,7 +25,35 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
+
+
     <script src="_framework/blazor.webassembly.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <script>
+        window.alert = (title, type) => {
+            let gradient = ")";
+            if (type === "success") {
+                gradient = "linear-gradient(to right, #1d976c, #93f9b9)";
+            }
+
+            if (type === "danger") {
+                gradient = "linear-gradient(to right, #ed213a, #93291e)";
+            }
+
+            Toastify({
+                text: title,
+                duration: 3000,
+                style: {
+                    background: gradient
+                },
+                gravity: "bottom",
+                position: "right"
+            }).showToast();
+        }
+    </script>
 </body>
 
 </html>

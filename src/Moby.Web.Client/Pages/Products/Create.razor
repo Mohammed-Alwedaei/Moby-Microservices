@@ -53,6 +53,6 @@
     {
         await ProductService.CreateProductAsync<ProductDto>(Product);
 
-        NavigationManager.NavigateTo("/Products");
+        NavigationManager.NavigateTo("/Products?alert=success&title=Product Created");
     }
 }

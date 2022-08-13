@@ -1,6 +1,7 @@
 ﻿@page "/Products"
 
 @inject IProductService ProductService
+@inject IJSRuntime JsRuntime
 
 <PageTitle>Our Products</PageTitle>
 
@@ -40,7 +41,7 @@ else
             {
                 <tr>
                     <td>@product.Name</td>
-                    <td>@product.Description.Substring(0, 30)</td>
+                    <td class="w-25" style="text-overflow: ellipsis;">@product.Description</td>
                     <td>@product.Category</td>
                     <td>@product.Price.ToString("c")</td>
                     <td>
@@ -54,6 +55,14 @@ else
 }
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "alert")]
+    public string Alert { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "title")]
+    public string Title { get; set; }
+
     private List<ProductDto> Products = new();
 
     protected override async Task OnInitializedAsync()
@@ -62,5 +71,13 @@ else
 
         if (response.Results is not null || response.IsSuccess is not false)
             Products = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Results));
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+            if (!string.IsNullOrEmpty(Alert) && !string.IsNullOrEmpty(Title))
+                Title = Title.Replace("%", " ");
+                await JsRuntime.InvokeVoidAsync("alert", Title, Alert);
     }
 }
