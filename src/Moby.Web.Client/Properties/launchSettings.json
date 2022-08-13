@@ -3,17 +3,17 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:4932",
-      "sslPort": 44305
+      "applicationUrl": "http://localhost:19428",
+      "sslPort": 44328
     }
   },
   "profiles": {
-    "Moby.Web.Client": {
+    "Moby.Web.Client.App": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-      "applicationUrl": "https://localhost:7018;http://localhost:5018",
+      "applicationUrl": "https://localhost:7085;http://localhost:5085",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

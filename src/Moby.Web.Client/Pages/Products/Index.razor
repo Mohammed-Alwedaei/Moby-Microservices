@@ -75,9 +75,17 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
-            if (!string.IsNullOrEmpty(Alert) && !string.IsNullOrEmpty(Title))
+        if (firstRender)
+            if (string.IsNullOrEmpty(Alert) == true && string.IsNullOrEmpty(Title) == true)
+            {
+                return;
+            }
+            else
+            {
                 Title = Title.Replace("%", " ");
                 await JsRuntime.InvokeVoidAsync("alert", Title, Alert);
+            }
+
+            
     }
 }

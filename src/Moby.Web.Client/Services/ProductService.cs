@@ -1,24 +1,24 @@
 ﻿using Moby.Web.Client.Models;
 using Moby.Web.Client.Services.IServices;
+using Moby.Web.Shared;
 
 namespace Moby.Web.Client.Services
 {
     public class ProductService : BaseService, IProductService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly HttpClient _httpClient;
 
-        public ProductService(IHttpClientFactory httpClientFactory) : base(httpClientFactory)
+        public ProductService(HttpClient httpClient, ILogger<BaseService> logger) : base(httpClient)
         {
-            _httpClientFactory = httpClientFactory;
+            _httpClient = httpClient;
         }
 
         public async Task<T> GetProductByIdAsync<T>(int id)
         {
             return await SendAsync<T>(new HttpRequestModel
             {
-                 HttpMethodTypes = SD.HttpMethodTypes.GET,
-                 Url = $"{SD.ProductsBaseApi}/api/products/{id}",
-                 AccessToken = ""
+                HttpMethodTypes = SD.HttpMethodTypes.GET,
+                Url = $"api/products/{id}"
             });
         }
 
@@ -27,8 +27,7 @@ namespace Moby.Web.Client.Services
             return await SendAsync<T>(new HttpRequestModel
             {
                 HttpMethodTypes = SD.HttpMethodTypes.GET,
-                Url = $"{SD.ProductsBaseApi}/api/products",
-                AccessToken = ""
+                Url = "api/products"
             });
         }
 
@@ -37,9 +36,8 @@ namespace Moby.Web.Client.Services
             return await SendAsync<T>(new HttpRequestModel
             {
                 HttpMethodTypes = SD.HttpMethodTypes.POST,
-                Url = $"{SD.ProductsBaseApi}/api/products",
-                Data = product,
-                AccessToken = ""
+                Url = $"api/products",
+                Data = product
             });
         }
 
@@ -48,9 +46,8 @@ namespace Moby.Web.Client.Services
             return await SendAsync<T>(new HttpRequestModel
             {
                 HttpMethodTypes = SD.HttpMethodTypes.PUT,
-                Url = $"{SD.ProductsBaseApi}/api/products",
-                Data = product,
-                AccessToken = ""
+                Url = $"api/products",
+                Data = product
             });
         }
 
@@ -59,8 +56,7 @@ namespace Moby.Web.Client.Services
             return await SendAsync<T>(new HttpRequestModel
             {
                 HttpMethodTypes = SD.HttpMethodTypes.DELETE,
-                Url = $"{SD.ProductsBaseApi}/api/products/{id}",
-                AccessToken = ""
+                Url = $"api/products/{id}"
             });
         }
     }

@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Duende.BFF.Yarp" Version="1.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.8" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Moby.Web.Client\Moby.Web.Client.csproj" />
+  </ItemGroup>
+
+
+</Project>

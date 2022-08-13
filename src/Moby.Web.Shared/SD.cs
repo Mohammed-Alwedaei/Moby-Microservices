@@ -1,4 +1,4 @@
-﻿namespace Moby.Web.Client
+﻿namespace Moby.Web.Shared
 {
     public static class SD
     {

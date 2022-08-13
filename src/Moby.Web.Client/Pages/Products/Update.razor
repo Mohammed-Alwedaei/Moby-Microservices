@@ -1,6 +1,5 @@
 ﻿@page "/Products/Update"
 
-@inject IProductService ProductService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Our Products</PageTitle>
@@ -57,15 +56,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await ProductService.GetProductByIdAsync<ResponseDto>(ProductId);
+        //var response = await ProductService.GetProductByIdAsync<ResponseDto>(ProductId);
 
-        Product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Results));
+        //Product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Results));
     }
 
     private async Task BeginProductUpdate()
     {
-        await ProductService.UpdateProductAsync<ProductDto>(Product);
+        //await ProductService.UpdateProductAsync<ProductDto>(Product);
 
-        NavigationManager.NavigateTo("/Products");
+        //NavigationManager.NavigateTo("/Products");
     }
 }

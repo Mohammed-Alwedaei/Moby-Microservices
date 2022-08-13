@@ -1,6 +1,6 @@
 ﻿using Moby.Web.Shared;
 
-namespace Moby.Web.Client.Models
+namespace Moby.Web.Shared.Models
 {
     public class HttpRequestModel
     {

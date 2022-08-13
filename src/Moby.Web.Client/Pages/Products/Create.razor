@@ -1,6 +1,5 @@
 ﻿@page "/Products/Create"
 
-@inject IProductService ProductService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Our Products</PageTitle>
@@ -51,7 +50,7 @@
 
     private async Task BeginProductCreate()
     {
-        await ProductService.CreateProductAsync<ProductDto>(Product);
+        //await ProductService.CreateProductAsync<ProductDto>(Product);
 
         NavigationManager.NavigateTo("/Products?alert=success&title=Product Created");
     }

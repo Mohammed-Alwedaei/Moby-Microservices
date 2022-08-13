@@ -1,7 +1,9 @@
 ﻿using Moby.Web.Client.Models;
 using Moby.Web.Client.Services.IServices;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text;
+using Moby.Web.Shared;
 
 namespace Moby.Web.Client.Services
 {
@@ -9,11 +11,11 @@ namespace Moby.Web.Client.Services
     {
         public HttpRequestModel HttpRequest { get; set; }
 
-        private IHttpClientFactory HttpClientFactory { get; set; }
+        private HttpClient _httpClient { get; set; }
 
-        public BaseService(IHttpClientFactory httpClientFactory)
+        public BaseService(HttpClient httpClient)
         {
-            HttpClientFactory = httpClientFactory;
+            _httpClient = httpClient;
 
             HttpRequest = new();
         }
@@ -22,19 +24,19 @@ namespace Moby.Web.Client.Services
         {
             try
             {
-                var client = HttpClientFactory.CreateClient("Moby.Client");
                 HttpRequestMessage message = new();
 
                 message.Headers.Add("Accept", "application/json");
-                message.RequestUri = new Uri(httpRequest.Url);
+                message.RequestUri = new Uri("https://localhost:7085/" + httpRequest.Url);
 
-                client.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.Clear();
 
                 if (httpRequest.Data is not null)
                     message.Content = new StringContent(JsonConvert.SerializeObject(httpRequest.Data),
                         encoding: Encoding.UTF8, "application/json");
 
                 HttpResponseMessage response = null;
+
 
                 switch (httpRequest.HttpMethodTypes)
                 {
@@ -55,7 +57,7 @@ namespace Moby.Web.Client.Services
                         break;
                 }
 
-                response = await client.SendAsync(message);
+                response = await _httpClient.SendAsync(message);
 
                 var content = await response.Content.ReadAsStringAsync();
 
@@ -80,6 +82,24 @@ namespace Moby.Web.Client.Services
 
                 return responseDto;
             }
+        }
+
+        public async Task<string> GetAccessToken()
+        {
+            HttpRequestMessage message = new();
+
+            message.Headers.Add("Accept", "application/json");
+            message.RequestUri = new Uri("https://localhost:7085/GetToken");
+
+            message.Method = HttpMethod.Get;
+
+            _httpClient.DefaultRequestHeaders.Clear();
+
+            var response = await _httpClient.SendAsync(message);
+
+            var token = await response.Content.ReadAsStringAsync();
+
+            return token;
         }
 
         public void Dispose()
