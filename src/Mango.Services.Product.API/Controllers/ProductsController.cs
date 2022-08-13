@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moby.Services.Product.API.Models.Dto;
 using Moby.Services.Product.API.Repository.IRepository;
@@ -6,6 +7,7 @@ using Moby.Services.Product.API.Repository.IRepository;
 namespace Moby.Services.Product.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin")]
     [ApiController]
     public class ProductsController : ControllerBase
     {

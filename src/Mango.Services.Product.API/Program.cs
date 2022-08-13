@@ -114,6 +114,8 @@ app.UseHttpsRedirection();
 
 app.UseCors("Moby.Client");
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

@@ -50,6 +50,7 @@ namespace Moby.Services.Identity
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.Email,
+                    "remote_api",
                     "mango"
                 }
             }

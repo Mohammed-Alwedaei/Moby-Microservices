@@ -1,3 +1,6 @@
+using Duende.Bff;
+using Duende.Bff.Yarp;
+using Duende.IdentityServer.Test;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moby.Services.Identity;
@@ -26,12 +29,48 @@ var duendeIdentity = builder.Services.AddIdentityServer(options =>
         options.Events.RaiseSuccessEvents = true;
         options.Events.RaiseFailureEvents = true;
         options.EmitStaticAudienceClaim = true;
-    }).AddInMemoryIdentityResources(SD.IdentityResources)
+    })
+    .AddInMemoryIdentityResources(SD.IdentityResources)
     .AddInMemoryApiScopes(SD.ApiScopes)
     .AddInMemoryClients(SD.Clients)
-    .AddAspNetIdentity<ApplicationUserModel>();
+    .AddAspNetIdentity<ApplicationUserModel>()
+    .AddTestUsers(TestUsers.Users);
 
 duendeIdentity.AddDeveloperSigningCredential();
+
+builder.Services.AddBff()
+    .AddRemoteApis();
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = "cookie";
+        options.DefaultChallengeScheme = "oidc";
+        options.DefaultSignOutScheme = "oidc";
+    })
+    .AddCookie("cookie", options =>
+    {
+        options.Cookie.Name = "__Host-blazor";
+        options.Cookie.SameSite = SameSiteMode.None;
+    })
+    .AddOpenIdConnect("oidc", options =>
+    {
+        options.Authority = "https://localhost:7246";
+
+        options.ClientId = "Mango";
+        options.ClientSecret = "secret";
+        options.ResponseType = "code";
+        options.ResponseMode = "query";
+
+        options.TokenValidationParameters.NameClaimType = "name";
+        options.TokenValidationParameters.RoleClaimType = "role";
+
+        options.Scope.Add("mango");
+
+        options.MapInboundClaims = false;
+
+        options.GetClaimsFromUserInfoEndpoint = true;
+        options.SaveTokens = true;
+    });
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
@@ -58,9 +97,25 @@ app.UseRouting();
 
 app.UseIdentityServer();
 
+app.UseAuthentication();
+app.UseBff();
+
 app.UseAuthorization();
 
+app.MapBffManagementEndpoints();
+
 app.MapRazorPages();
+
+app.MapControllers()
+    .RequireAuthorization()
+    .AsBffApiEndpoint();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRemoteBffApiEndpoint(
+            "/api/products", "https://localhost:7190/api/Products")
+        .RequireAccessToken(TokenType.User);
+});
 
 app.Run();
 

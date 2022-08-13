@@ -29,12 +29,12 @@
 
 
     <script src="_framework/blazor.webassembly.js"></script>
-
+    <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
         window.alert = (title, type) => {
-            let gradient = ")";
+            let gradient = "";
             if (type === "success") {
                 gradient = "linear-gradient(to right, #1d976c, #93f9b9)";
             }
