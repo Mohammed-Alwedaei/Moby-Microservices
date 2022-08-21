@@ -37,8 +37,6 @@ var duendeIdentity = builder.Services.AddIdentityServer(options =>
 
 duendeIdentity.AddDeveloperSigningCredential();
 
-
-
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 var app = builder.Build();

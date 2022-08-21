@@ -2,62 +2,61 @@
 using Moby.Web.Client.Services.IServices;
 using Moby.Web.Shared;
 
-namespace Moby.Web.Client.Services
+namespace Moby.Web.Client.Services;
+
+public class ProductService : BaseService, IProductService
 {
-    public class ProductService : BaseService, IProductService
+    private readonly HttpClient _httpClient;
+
+    public ProductService(HttpClient httpClient) : base(httpClient)
     {
-        private readonly HttpClient _httpClient;
+        _httpClient = httpClient;
+    }
 
-        public ProductService(HttpClient httpClient, ILogger<BaseService> logger) : base(httpClient)
+    public async Task<T> GetProductByIdAsync<T>(int id)
+    {
+        return await SendAsync<T>(new HttpRequestModel
         {
-            _httpClient = httpClient;
-        }
+            HttpMethodTypes = SD.HttpMethodTypes.GET,
+            Url = $"api/products/{id}"
+        });
+    }
 
-        public async Task<T> GetProductByIdAsync<T>(int id)
+    public async Task<T> GetProductsAsync<T>()
+    {
+        return await SendAsync<T>(new HttpRequestModel
         {
-            return await SendAsync<T>(new HttpRequestModel
-            {
-                HttpMethodTypes = SD.HttpMethodTypes.GET,
-                Url = $"api/products/{id}"
-            });
-        }
+            HttpMethodTypes = SD.HttpMethodTypes.GET,
+            Url = "api/products"
+        });
+    }
 
-        public async Task<T> GetProductsAsync<T>()
+    public async Task<T> CreateProductAsync<T>(ProductDto product)
+    {
+        return await SendAsync<T>(new HttpRequestModel
         {
-            return await SendAsync<T>(new HttpRequestModel
-            {
-                HttpMethodTypes = SD.HttpMethodTypes.GET,
-                Url = "api/products"
-            });
-        }
+            HttpMethodTypes = SD.HttpMethodTypes.POST,
+            Url = $"api/products",
+            Data = product
+        });
+    }
 
-        public async Task<T> CreateProductAsync<T>(ProductDto product)
+    public async Task<T> UpdateProductAsync<T>(ProductDto product)
+    {
+        return await SendAsync<T>(new HttpRequestModel
         {
-            return await SendAsync<T>(new HttpRequestModel
-            {
-                HttpMethodTypes = SD.HttpMethodTypes.POST,
-                Url = $"api/products",
-                Data = product
-            });
-        }
+            HttpMethodTypes = SD.HttpMethodTypes.PUT,
+            Url = $"api/products",
+            Data = product
+        });
+    }
 
-        public async Task<T> UpdateProductAsync<T>(ProductDto product)
+    public async Task<T> DeleteProductAsync<T>(int id)
+    {
+        return await SendAsync<T>(new HttpRequestModel
         {
-            return await SendAsync<T>(new HttpRequestModel
-            {
-                HttpMethodTypes = SD.HttpMethodTypes.PUT,
-                Url = $"api/products",
-                Data = product
-            });
-        }
-
-        public async Task<T> DeleteProductAsync<T>(int id)
-        {
-            return await SendAsync<T>(new HttpRequestModel
-            {
-                HttpMethodTypes = SD.HttpMethodTypes.DELETE,
-                Url = $"api/products/{id}"
-            });
-        }
+            HttpMethodTypes = SD.HttpMethodTypes.DELETE,
+            Url = $"api/products/{id}"
+        });
     }
 }

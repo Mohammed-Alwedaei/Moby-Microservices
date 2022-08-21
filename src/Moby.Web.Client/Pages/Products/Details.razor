@@ -1,0 +1,29 @@
+﻿@page "/Products/Details"
+
+@inject IProductService ProductService
+
+<section class="row"> 
+    <div class="col-lg-6 col-md-12">
+        <h3>@_product.Name</h3>
+        <p>@((MarkupString)_product.Description))</p>
+    </div>
+    
+    <div class="col-lg-6 col-md-12">
+        <img class="img-fluid rounded-3" src="@_product.ImageUrl" />
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "productid")]
+    public int ProductId { get; set; }
+
+    private ProductDto _product = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await ProductService.GetProductByIdAsync<ResponseDto>(ProductId);
+
+        _product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Results));
+    }
+}

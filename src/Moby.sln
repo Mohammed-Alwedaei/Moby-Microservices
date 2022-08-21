@@ -17,6 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Web.Shared", "Moby.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Web.Client", "Moby.Web.Client\Moby.Web.Client.csproj", "{93521810-2700-45DA-BF2E-EB595A64B694}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Service.ShoppingCart.API", "Moby.Service.ShoppingCart.API\Moby.Service.ShoppingCart.API.csproj", "{31D66F73-E19F-401D-AE8F-49FECD6FBBAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B32E082B-F79A-43DF-8D3E-C1D50DD4CDAB}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +50,10 @@ Global
 		{93521810-2700-45DA-BF2E-EB595A64B694}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93521810-2700-45DA-BF2E-EB595A64B694}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93521810-2700-45DA-BF2E-EB595A64B694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31D66F73-E19F-401D-AE8F-49FECD6FBBAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31D66F73-E19F-401D-AE8F-49FECD6FBBAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31D66F73-E19F-401D-AE8F-49FECD6FBBAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31D66F73-E19F-401D-AE8F-49FECD6FBBAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +64,7 @@ Global
 		{635580FC-5B55-4C37-8234-294E2EEF0FEB} = {B8E36A2F-0DF0-4750-9416-257B8E6FF22A}
 		{2D9819A8-6465-4FF8-90A7-5E02EE7A6C3F} = {B8E36A2F-0DF0-4750-9416-257B8E6FF22A}
 		{93521810-2700-45DA-BF2E-EB595A64B694} = {B8E36A2F-0DF0-4750-9416-257B8E6FF22A}
+		{31D66F73-E19F-401D-AE8F-49FECD6FBBAD} = {8DDBC95C-CC4A-4181-A2D5-B9A47AB32786}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81957DBB-88CD-49C8-80A1-BE42B5FDE965}

@@ -4,122 +4,123 @@ using Microsoft.AspNetCore.Mvc;
 using Moby.Services.Product.API.Models.Dto;
 using Moby.Services.Product.API.Repository.IRepository;
 
-namespace Moby.Services.Product.API.Controllers
+namespace Moby.Services.Product.API.Controllers;
+
+[Route("api/[controller]")]
+[Authorize]
+[ApiController]
+public class ProductsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [Authorize]
-    [ApiController]
-    public class ProductsController : ControllerBase
+    private readonly IProductRepository _productRepository;
+    protected ResponseDto _response;
+
+    public ProductsController(IProductRepository productRepository)
     {
-        private readonly IProductRepository _productRepository;
-        protected ResponseDto _response;
+        _productRepository = productRepository;
+        _response = new();
+    }
 
-        public ProductsController(IProductRepository productRepository)
+    [HttpGet]
+    [AllowAnonymous]
+    [Route("{id:int}")]
+    public async Task<object> GetProductById(int id)
+    {
+        try
         {
-            _productRepository = productRepository;
-            _response = new();
+            var productsFromDb = await _productRepository.GetProductByIdAsync(id);
+            _response.Results = productsFromDb;
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.Errors = new List<string>
+            {
+                exception.Message
+            };
         }
 
-        [HttpGet]
-        [Route("{id:int}")]
-        public async Task<object> GetProductById(int id)
-        {
-            try
-            {
-                var productsFromDb = await _productRepository.GetProductByIdAsync(id);
-                _response.Results = productsFromDb;
-            }
-            catch (Exception exception)
-            {
-                _response.IsSuccess = false;
-                _response.Errors = new List<string>
-                {
-                    exception.Message
-                };
-            }
+        return _response;
+    }
 
-            return _response;
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<object> GetProducts()
+    {
+        try
+        {
+            var productsFromDb = await _productRepository.GetProductsAsync();
+            _response.Results = productsFromDb;
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.Errors = new List<string>
+            {
+                exception.Message
+            };
         }
 
-        [HttpGet]
-        public async Task<object> GetProducts()
-        {
-            try
-            {
-                var productsFromDb = await _productRepository.GetProductsAsync();
-                _response.Results = productsFromDb;
-            }
-            catch (Exception exception)
-            {
-                _response.IsSuccess = false;
-                _response.Errors = new List<string>
-                {
-                    exception.Message
-                };
-            }
+        return _response;
+    }
 
-            return _response;
+    [HttpPost]
+    public async Task<object> CreateProduct([FromBody] ProductDto product)
+    {
+        try
+        {
+            var productsFromDb = await _productRepository.CreateProductAsync(product);
+            _response.Results = productsFromDb;
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.Errors = new List<string>
+            {
+                exception.Message
+            };
         }
 
-        [HttpPost]
-        public async Task<object> CreateProduct([FromBody] ProductDto product)
-        {
-            try
-            {
-                var productsFromDb = await _productRepository.CreateProductAsync(product);
-                _response.Results = productsFromDb;
-            }
-            catch (Exception exception)
-            {
-                _response.IsSuccess = false;
-                _response.Errors = new List<string>
-                {
-                    exception.Message
-                };
-            }
+        return _response;
+    }
 
-            return _response;
+    [HttpPut]
+    public async Task<object> UpdateProduct([FromBody] ProductDto product)
+    {
+        try
+        {
+            var productsFromDb = await _productRepository.UpdateProductAsync(product);
+            _response.Results = productsFromDb;
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.Errors = new List<string>
+            {
+                exception.Message
+            };
         }
 
-        [HttpPut]
-        public async Task<object> UpdateProduct([FromBody] ProductDto product)
-        {
-            try
-            {
-                var productsFromDb = await _productRepository.UpdateProductAsync(product);
-                _response.Results = productsFromDb;
-            }
-            catch (Exception exception)
-            {
-                _response.IsSuccess = false;
-                _response.Errors = new List<string>
-                {
-                    exception.Message
-                };
-            }
+        return _response;
+    }
 
-            return _response;
+    [HttpDelete]
+    [Route("{id:int}")]
+    public async Task<object> DeleteProduct(int id)
+    {
+        try
+        {
+            var productsFromDb = await _productRepository.DeleteProductByIdAsync(id);
+            _response.Results = productsFromDb;
+        }
+        catch (Exception exception)
+        {
+            _response.IsSuccess = false;
+            _response.Errors = new List<string>
+            {
+                exception.Message
+            };
         }
 
-        [HttpDelete]
-        [Route("{id:int}")]
-        public async Task<object> DeleteProduct(int id)
-        {
-            try
-            {
-                var productsFromDb = await _productRepository.DeleteProductByIdAsync(id);
-                _response.Results = productsFromDb;
-            }
-            catch (Exception exception)
-            {
-                _response.IsSuccess = false;
-                _response.Errors = new List<string>
-                {
-                    exception.Message
-                };
-            }
-
-            return _response;
-        }
+        return _response;
     }
 }

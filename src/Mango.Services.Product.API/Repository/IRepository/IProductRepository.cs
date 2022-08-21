@@ -1,16 +1,15 @@
 ﻿using Moby.Services.Product.API.Models.Dto;
 
-namespace Moby.Services.Product.API.Repository.IRepository
+namespace Moby.Services.Product.API.Repository.IRepository;
+
+public interface IProductRepository
 {
-    public interface IProductRepository
-    {
-        Task<IEnumerable<ProductDto>> GetProductsAsync();
+    Task<IEnumerable<ProductDto>> GetProductsAsync();
 
-        Task<ProductDto> GetProductByIdAsync(int id);
+    Task<ProductDto> GetProductByIdAsync(int id);
 
-        Task<ProductDto> CreateProductAsync(ProductDto product);
-        Task<ProductDto> UpdateProductAsync(ProductDto product);
+    Task<ProductDto> CreateProductAsync(ProductDto product);
+    Task<ProductDto> UpdateProductAsync(ProductDto product);
 
-        Task<bool> DeleteProductByIdAsync(int id);
-    }
+    Task<bool> DeleteProductByIdAsync(int id);
 }

@@ -2,16 +2,15 @@
 using Moby.Services.Product.API.Models;
 using Moby.Services.Product.API.Models.Dto;
 
-namespace Moby.Services.Product.API.Mapper
+namespace Moby.Services.Product.API.Mapper;
+
+public class MapperConfig
 {
-    public class MapperConfig
+    public static MapperConfiguration RegisterMaps()
     {
-        public static MapperConfiguration RegisterMaps()
+        return new MapperConfiguration(config =>
         {
-            return new MapperConfiguration(config =>
-            {
-                config.CreateMap<ProductModel, ProductDto>().ReverseMap();
-            });
-        }
+            config.CreateMap<ProductModel, ProductDto>().ReverseMap();
+        });
     }
 }

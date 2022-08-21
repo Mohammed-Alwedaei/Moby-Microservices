@@ -2,13 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Moby.Services.Identity.Models;
 
-namespace Moby.Services.Identity.DbContexts
+namespace Moby.Services.Identity.DbContexts;
+
+public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel>
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel>
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
             
-        }
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Moby.Services.Identity.DbInitializer
+﻿namespace Moby.Services.Identity.DbInitializer;
+
+public interface IDbInitializer
 {
-    public interface IDbInitializer
-    {
-        Task InitializeAsync();
-    }
+    Task InitializeAsync();
 }

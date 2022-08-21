@@ -1,28 +1,27 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Moby.Services.Product.API.Models
+namespace Moby.Services.Product.API.Models;
+
+public class ProductModel
 {
-    public class ProductModel
-    {
-        [Key]
-        public int Id { get; set; }
+    [Key]
+    public int Id { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string? Name { get; set; }
+    [Required]
+    [MaxLength(50)]
+    public string? Name { get; set; }
 
-        [Required]
-        [Range(1, 1000)]
-        public decimal Price { get; set; }
+    [Required]
+    [Range(1, 1000)]
+    public decimal Price { get; set; }
 
-        [Required]
-        [MaxLength(350)]
-        public string? Description { get; set; }
+    [Required]
+    [MaxLength(350)]
+    public string? Description { get; set; }
 
-        [MaxLength(50)]
-        public string? Category { get; set; }
+    [MaxLength(50)]
+    public string? Category { get; set; }
 
-        [MaxLength(250)]
-        public string? ImageUrl { get; set; }
-    }
+    [MaxLength(250)]
+    public string? ImageUrl { get; set; }
 }

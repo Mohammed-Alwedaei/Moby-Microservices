@@ -19,40 +19,23 @@
     </div>
 </section>
 
-@if (!Products.Any())
-{
-    <div class="spinner-border"></div>
-}
-else
-{
-    <table class="table table-borderless table-striped shadow-lg rounded-3 overflow-hidden">
-        <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+<section class="row">
+    @if (!Products.Any())
+    {
+        <div class="spinner-border"></div>
+    }
+    else
+    {
+        @foreach (var product in Products)
+        {
+            <div class="col-lg-3">
+                <ProductCard Product="product" />
+            </div>
+            
+        }
+    }
+</section>
 
-        <tbody>
-            @foreach (var product in Products)
-            {
-                <tr>
-                    <td>@product.Name</td>
-                    <td class="w-25" style="text-overflow: ellipsis;">@product.Description</td>
-                    <td>@product.Category</td>
-                    <td>@product.Price.ToString("c")</td>
-                    <td>
-                        <a class="btn btn-sm btn-secondary" href="/Products/Update?productId=@product.Id">Update</a>
-                        <a class="btn btn-sm btn-danger" href="/Products/Delete?productId=@product.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
 
 @code {
     [Parameter]
@@ -76,10 +59,8 @@ else
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-            if (string.IsNullOrEmpty(Alert) == true && string.IsNullOrEmpty(Title) == true)
-            {
+            if (string.IsNullOrEmpty(Alert) && string.IsNullOrEmpty(Title))
                 return;
-            }
             else
             {
                 Title = Title.Replace("%", " ");
