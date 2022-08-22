@@ -1,0 +1,53 @@
+﻿@page "/cart"
+@using Moby.Web.Shared.Models.Cart
+
+@inject IProductService ProductService
+@inject IShoppingCartService ShoppingCartService
+@inject AuthenticationStateProvider AuthenticationState
+
+<h3>Cart</h3>
+
+@if (!_isLoading)
+{
+    <p>@_cart.CartHeader.Total</p>
+}
+
+@code {
+    private CartDto _cart = new();
+
+    private bool _isLoading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _cart = await GetCartDtoByUserIdAsync();
+    }
+
+    private async Task<CartDto> GetCartDtoByUserIdAsync()
+    {
+        _isLoading = true;
+
+        var cart = new CartDto();
+
+        var userId = AuthenticationState.GetAuthenticationStateAsync()
+            .Result.User.Claims.
+            FirstOrDefault(c => c.Type == "sub")?.Value;
+
+        var shoppingCartResponse = await ShoppingCartService.GetCartByUserIdAsync<ResponseDto>(userId);
+
+        if (shoppingCartResponse.Results is not null || shoppingCartResponse.IsSuccess)
+            cart = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(shoppingCartResponse.Results));
+
+        var cartTotal = 0m;
+
+        foreach (var detail in cart.CartDetails)
+        {
+            cartTotal = (detail.Product.Price * detail.Count);
+        }
+
+        cart.CartHeader.Total = cartTotal;
+
+        _isLoading = false;
+
+        return cart;
+    }
+}
