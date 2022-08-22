@@ -4,7 +4,7 @@ namespace Moby.Service.ShoppingCart.API.Repository;
 
 public interface ICartManager
 {
-    Task<CartDto> GetCartByUserIdAsync(int userId);
+    Task<CartDto> GetCartByUserIdAsync(string userId);
 
     Task<CartDto> CreateCartAsync(CartDto cart);
 
