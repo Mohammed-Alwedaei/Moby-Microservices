@@ -36,7 +36,6 @@
     }
 </section>
 
-
 @code {
     [Parameter]
     [SupplyParameterFromQuery(Name = "alert")]
@@ -66,7 +65,5 @@
                 Title = Title.Replace("%", " ");
                 await JsRuntime.InvokeVoidAsync("alert", Title, Alert);
             }
-
-            
     }
 }

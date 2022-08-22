@@ -72,7 +72,6 @@ app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
 
-
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
@@ -84,7 +83,11 @@ app.MapControllers()
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRemoteBffApiEndpoint(
-            "/api/products", "https://localhost:7190/api/Products")
+            "/api/products", "https://localhost:7190/api/products")
+        .RequireAccessToken(TokenType.User);
+
+    endpoints.MapRemoteBffApiEndpoint(
+            "/api/carts", "https://localhost:7008/api/carts")
         .RequireAccessToken(TokenType.User);
 });
 

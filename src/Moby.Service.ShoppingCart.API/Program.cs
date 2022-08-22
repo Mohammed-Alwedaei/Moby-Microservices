@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Moby.Service.ShoppingCart.API.DbContexts;
 using Moby.Service.ShoppingCart.API.Mapper;
+using Moby.Service.ShoppingCart.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +65,12 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 /* Automapper Configuration End */
+
+/*  */
+
+builder.Services.AddScoped<ICartManager, CartManager>();
+
+/*  */
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>

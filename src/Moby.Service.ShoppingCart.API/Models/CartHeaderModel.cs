@@ -1,7 +1,10 @@
-﻿namespace Moby.Service.ShoppingCart.API.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Moby.Service.ShoppingCart.API.Models;
 
 public class CartHeaderModel
 {
+    [Key]
     public int Id { get; set; }
 
     public string? UserId { get; set; }

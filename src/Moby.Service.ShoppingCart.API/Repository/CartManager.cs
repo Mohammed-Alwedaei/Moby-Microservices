@@ -50,7 +50,8 @@ public class CartManager : ICartManager
 
         //If cart header is null create one
         var cartHeaderFromDb = await _db.CartHeaders
-            .FirstOrDefaultAsync(h => h.Id == cartToBeCreated.CartHeader.Id);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(h => h.UserId == cartToBeCreated.CartHeader.UserId);
 
         if (cartHeaderFromDb is null)
         {
@@ -59,12 +60,31 @@ public class CartManager : ICartManager
             await _db.SaveChangesAsync();
 
             //Create cart details and reference the previous cart header
-            cartToBeCreated.CartDetails.FirstOrDefault().Id = cartToBeCreated.CartHeader.Id;
+            cartToBeCreated.CartDetails.FirstOrDefault().CartHeaderId = cartToBeCreated.CartHeader.Id;
 
             cartToBeCreated.CartDetails.FirstOrDefault().Product = null;
             _db.CartDetails.Add(cartToBeCreated.CartDetails.FirstOrDefault());
+
             await _db.SaveChangesAsync();
         }
+
+        //var cartDetailsFromDb = await _db.CartDetails
+        //    .AsNoTracking()
+        //    .FirstOrDefaultAsync(d => d.Id == cartToBeCreated.CartDetails.FirstOrDefault().Id
+        //                              && d.CartHeaderId == cartToBeCreated.CartHeader.Id);
+
+        //if (cartDetailsFromDb is null)
+        //{
+        //    var createdCartHeader = await _db.CartHeaders
+        //        .FirstOrDefaultAsync(h => h.UserId == cartToBeCreated.CartHeader.UserId);
+
+        //    cartToBeCreated.CartDetails.FirstOrDefault().Id = createdCartHeader.Id;
+        //    cartToBeCreated.CartDetails.FirstOrDefault().Product = null;
+
+        //    _db.CartDetails.Add(cartToBeCreated.CartDetails.FirstOrDefault());
+
+        //    await _db.SaveChangesAsync();
+        //}
 
         return _mapper.Map<CartModel, CartDto>(cartToBeCreated);
     }
@@ -81,16 +101,7 @@ public class CartManager : ICartManager
             .FirstOrDefaultAsync(d => d.Id == cartToBeUpdated.CartDetails.FirstOrDefault().Id
                                       && d.CartHeaderId == cartToBeUpdated.CartHeader.Id);
         //Create cart details 
-        if (cartDetailsFromDb is null)
-        {
-            cartToBeUpdated.CartDetails.FirstOrDefault().Id = cartHeaderFromDb.Id;
-            cartToBeUpdated.CartDetails.FirstOrDefault().Product = null;
-
-            _db.CartDetails.Add(cartToBeUpdated.CartDetails.FirstOrDefault());
-
-            await _db.SaveChangesAsync();
-        }
-        else
+        if (cartDetailsFromDb is not null)
         {
             cartToBeUpdated.CartDetails.FirstOrDefault().Count += cartDetailsFromDb.Count;
             _db.CartDetails.Update(cartToBeUpdated.CartDetails.FirstOrDefault());

@@ -1,4 +1,4 @@
-﻿namespace Moby.Web.Client.Models;
+﻿namespace Moby.Service.ShoppingCart.API.Models.Dto;
 
 public class ResponseDto
 {

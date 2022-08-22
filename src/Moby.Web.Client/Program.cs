@@ -16,6 +16,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, BffAuthenticationStatePr
 // HTTP client configuration
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 
 builder.Services.AddTransient<AntiforgeryHandler>();
 

@@ -1,9 +1,9 @@
-﻿using Moby.Web.Client.Models;
-using Moby.Web.Client.Services.IServices;
+﻿using Moby.Web.Client.Services.IServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using Moby.Web.Shared;
+using Moby.Web.Shared.Models;
 
 namespace Moby.Web.Client.Services;
 

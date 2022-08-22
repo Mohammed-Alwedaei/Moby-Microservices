@@ -1,62 +1,54 @@
 ﻿using Moby.Web.Client.Services.IServices;
 using Moby.Web.Shared;
 using Moby.Web.Shared.Models;
+using Moby.Web.Shared.Models.Cart;
 
 namespace Moby.Web.Client.Services;
 
-public class ProductService : BaseService, IProductService
+public class ShoppingCartService : BaseService, IShoppingCartService
 {
     private readonly HttpClient _httpClient;
 
-    public ProductService(HttpClient httpClient) : base(httpClient)
+    public ShoppingCartService(HttpClient httpClient) : base(httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public async Task<T> GetProductByIdAsync<T>(int id)
+    public async Task<T> GetCartByUserIdAsync<T>(string userId)
     {
         return await SendAsync<T>(new HttpRequestModel
         {
             HttpMethodTypes = SD.HttpMethodTypes.GET,
-            Url = $"api/products/{id}"
+            Url = $"api/carts/{userId}"
         });
     }
 
-    public async Task<T> GetProductsAsync<T>()
-    {
-        return await SendAsync<T>(new HttpRequestModel
-        {
-            HttpMethodTypes = SD.HttpMethodTypes.GET,
-            Url = "api/products"
-        });
-    }
-
-    public async Task<T> CreateProductAsync<T>(ProductDto product)
+    public async Task<T> CreateCartAsync<T>(CartDto cartToCreate)
     {
         return await SendAsync<T>(new HttpRequestModel
         {
             HttpMethodTypes = SD.HttpMethodTypes.POST,
-            Url = $"api/products",
-            Data = product
+            Data = cartToCreate,
+            Url = "api/carts"
         });
     }
 
-    public async Task<T> UpdateProductAsync<T>(ProductDto product)
+    public async Task<T> UpdateCartAsync<T>(CartDto cartToUpdate)
     {
         return await SendAsync<T>(new HttpRequestModel
         {
             HttpMethodTypes = SD.HttpMethodTypes.PUT,
-            Url = $"api/products",
-            Data = product
+            Data = cartToUpdate,
+            Url = "api/carts"
         });
     }
 
-    public async Task<T> DeleteProductAsync<T>(int id)
+    public async Task<T> RemoveProductFromCartAsync<T>(int cartDetailsId)
     {
         return await SendAsync<T>(new HttpRequestModel
         {
             HttpMethodTypes = SD.HttpMethodTypes.DELETE,
-            Url = $"api/products/{id}"
+            Url = "api/carts/cartDetailsId"
         });
     }
 }
