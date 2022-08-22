@@ -68,23 +68,23 @@ public class CartManager : ICartManager
             await _db.SaveChangesAsync();
         }
 
-        //var cartDetailsFromDb = await _db.CartDetails
-        //    .AsNoTracking()
-        //    .FirstOrDefaultAsync(d => d.Id == cartToBeCreated.CartDetails.FirstOrDefault().Id
-        //                              && d.CartHeaderId == cartToBeCreated.CartHeader.Id);
+        var cartDetailsFromDb = await _db.CartDetails
+            .AsNoTracking()
+            .FirstOrDefaultAsync(d => d.Id == cartToBeCreated.CartDetails.FirstOrDefault().Id
+                                      && d.CartHeaderId == cartToBeCreated.CartHeader.Id);
 
-        //if (cartDetailsFromDb is null)
-        //{
-        //    var createdCartHeader = await _db.CartHeaders
-        //        .FirstOrDefaultAsync(h => h.UserId == cartToBeCreated.CartHeader.UserId);
+        if (cartDetailsFromDb is null)
+        {
+            var createdCartHeader = await _db.CartHeaders
+                .FirstOrDefaultAsync(h => h.UserId == cartToBeCreated.CartHeader.UserId);
 
-        //    cartToBeCreated.CartDetails.FirstOrDefault().Id = createdCartHeader.Id;
-        //    cartToBeCreated.CartDetails.FirstOrDefault().Product = null;
+            cartToBeCreated.CartDetails.FirstOrDefault().CartHeaderId = createdCartHeader.Id;
+            cartToBeCreated.CartDetails.FirstOrDefault().Product = null;
 
-        //    _db.CartDetails.Add(cartToBeCreated.CartDetails.FirstOrDefault());
+            _db.CartDetails.Add(cartToBeCreated.CartDetails.FirstOrDefault());
 
-        //    await _db.SaveChangesAsync();
-        //}
+            await _db.SaveChangesAsync();
+        }
 
         return _mapper.Map<CartModel, CartDto>(cartToBeCreated);
     }
@@ -115,7 +115,8 @@ public class CartManager : ICartManager
     {
         try
         {
-            var cartDetails = await _db.CartDetails.FirstOrDefaultAsync(d => d.Id == cartDetailsId);
+            var cartDetails = await _db.CartDetails
+                .FirstOrDefaultAsync(d => d.Id == cartDetailsId);
 
             var totalCartProductsCount = _db.CartDetails
                 .Where(d => d.CartHeaderId == cartDetails.CartHeaderId)

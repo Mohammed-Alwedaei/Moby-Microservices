@@ -48,7 +48,7 @@ public class ShoppingCartService : BaseService, IShoppingCartService
         return await SendAsync<T>(new HttpRequestModel
         {
             HttpMethodTypes = SD.HttpMethodTypes.DELETE,
-            Url = "api/carts/cartDetailsId"
+            Url = $"api/carts/{cartDetailsId}"
         });
     }
 }

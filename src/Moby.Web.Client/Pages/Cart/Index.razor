@@ -1,9 +1,4 @@
 ﻿@page "/cart"
-@using Moby.Web.Shared.Models.Cart
-
-@inject IProductService ProductService
-@inject IShoppingCartService ShoppingCartService
-@inject AuthenticationStateProvider AuthenticationState
 
 <h3>Cart</h3>
 
@@ -65,7 +60,7 @@
 
                             <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
                                 <a class="btn btn-outline-danger">
-                                    <i class="oi oi-trash"></i>
+                                    <i class="oi oi-trash" @onclick="() => RemoveProductFromCart(detail.Id)"></i>
                                 </a>
                             </div>
                         </div>
@@ -75,10 +70,12 @@
                         <div class="col-6">
                             <span>Coupon:</span>
                             <input />
-                            <button type="submit" class="btn-success"> Apply </button>
+                            <button type="submit" class="btn-success">Apply</button>
                         </div>
                         <div class="col-6 text-end">
-                            <span class="text-danger" style="font-size:21px;">  Order Total : @_cart.CartHeader.Total.ToString("c") <br /></span>
+                            <span class="text-danger" style="font-size: 21px;">
+                                Order Total : @_cart.CartHeader.Total.ToString("c") <br/>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -86,7 +83,7 @@
                     <div class="col-6 col-md-3 offset-md-6">
                     </div>
                     <div class="col-6 col-md-3">
-                        <a class="btn btn-success form-control ">
+                        <a class="btn btn-success form-control">
                             <span>Checkout</span>
                         </a>
                     </div>
@@ -95,44 +92,4 @@
         </div>
     </form>
 
-}
-
-@code {
-    private CartDto _cart = new();
-
-    private bool _isLoading;
-
-    protected override async Task OnInitializedAsync()
-    {
-        _cart = await GetCartDtoByUserIdAsync();
-    }
-
-    private async Task<CartDto> GetCartDtoByUserIdAsync()
-    {
-        _isLoading = true;
-
-        var cart = new CartDto();
-
-        var userId = AuthenticationState.GetAuthenticationStateAsync()
-            .Result.User.Claims.
-            FirstOrDefault(c => c.Type == "sub")?.Value;
-
-        var shoppingCartResponse = await ShoppingCartService.GetCartByUserIdAsync<ResponseDto>(userId);
-
-        if (shoppingCartResponse.Results is not null || shoppingCartResponse.IsSuccess)
-            cart = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(shoppingCartResponse.Results));
-
-        var cartTotal = 0m;
-
-        foreach (var detail in cart.CartDetails)
-        {
-            cartTotal = (detail.Product.Price * detail.Count);
-        }
-
-        cart.CartHeader.Total = cartTotal;
-
-        _isLoading = false;
-
-        return cart;
-    }
 }
