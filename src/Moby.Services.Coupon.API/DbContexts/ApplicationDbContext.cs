@@ -11,4 +11,21 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<CouponModel> Coupons { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<CouponModel>().HasData(new CouponModel
+        {
+            Id = 1,
+            Code = "10OFF",
+            DiscountAmount = 10m
+        });
+
+        modelBuilder.Entity<CouponModel>().HasData(new CouponModel
+        {
+            Id = 2,
+            Code = "20OFF",
+            DiscountAmount = 20m
+        });
+    }
 }

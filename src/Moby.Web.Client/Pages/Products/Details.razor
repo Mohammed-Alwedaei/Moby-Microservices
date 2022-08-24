@@ -10,10 +10,12 @@
     <div class="col-lg-6 col-md-12">
         <h3>@_product.Name</h3>
         <p>@((MarkupString)_product.Description))</p>
-        
+
         <EditForm Model="Cart" OnValidSubmit="BeginAddToCartFlow">
             <InputNumber class="form-control form-control-lg" 
                          @bind-Value="Cart.Count" />
+            
+            
             
             <div class="my-3">
                 <button class="btn btn-primary">Add to cart</button>
@@ -59,7 +61,7 @@
 
         var productToAddResponse = await ProductService.GetProductByIdAsync<ResponseDto>(ProductId);
 
-        var cartDetails = new CartDetailsDto()
+        var cartDetails = new CartDetailsDto
         {
             ProductId = ProductId,
             Count = Cart.Count
@@ -92,4 +94,6 @@
     {
         public int Count { get; set; } = 1;
     }
+
+    
 }

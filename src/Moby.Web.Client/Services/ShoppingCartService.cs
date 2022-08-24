@@ -51,4 +51,22 @@ public class ShoppingCartService : BaseService, IShoppingCartService
             Url = $"api/carts/{cartDetailsId}"
         });
     }
+
+    public async Task<T> ApplyCouponAsync<T>(string userId, string couponCode)
+    {
+        return await SendAsync<T>(new HttpRequestModel
+        {
+            HttpMethodTypes = SD.HttpMethodTypes.POST,
+            Url = $"api/CartCoupons/{userId}/{couponCode}"
+        });
+    }
+
+    public async Task<T> RemoveCouponAsync<T>(string userId)
+    {
+        return await SendAsync<T>(new HttpRequestModel
+        {
+            HttpMethodTypes = SD.HttpMethodTypes.POST,
+            Url = $"api/CartCoupons/{userId}"
+        });
+    }
 }

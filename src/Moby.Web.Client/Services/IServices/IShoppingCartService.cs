@@ -11,4 +11,8 @@ public interface IShoppingCartService
     Task<T> UpdateCartAsync<T>(CartDto cart);
 
     Task<T> RemoveProductFromCartAsync<T>(int cartDetailsId);
+
+    Task<T> ApplyCouponAsync<T>(string userId, string couponCode);
+
+    Task<T> RemoveCouponAsync<T>(string userId);
 }

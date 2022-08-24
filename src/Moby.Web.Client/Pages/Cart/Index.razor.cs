@@ -17,11 +17,20 @@ public partial class Index
     [Inject]
     IShoppingCartService ShoppingCartService { get; set; }
 
-    [Inject] 
+    [Inject]
+    ICouponService CouponService { get; set; }
+
+    [Inject]
     AuthenticationStateProvider AuthenticationState { get; set; }
 
-    [Inject] 
+    [Inject]
     IJSRuntime JsRuntime { get; set; }
+
+    private CartCouponModel CartCouponCode = new();
+
+    private CouponDto _couponDto = new CouponDto();
+
+    private bool _hasDiscountCoupon;
 
     private CartDto _cart = new();
 
@@ -29,7 +38,7 @@ public partial class Index
 
     protected override async Task OnInitializedAsync()
     {
-        _cart = await GetCartDtoByUserIdAsync();
+        await GetCartDtoByUserIdAsync();
     }
 
     private async Task RemoveProductFromCart(int cartDetailsId)
@@ -46,7 +55,7 @@ public partial class Index
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task<CartDto> GetCartDtoByUserIdAsync()
+    private async Task GetCartDtoByUserIdAsync()
     {
         _isLoading = true;
 
@@ -61,11 +70,22 @@ public partial class Index
         if (shoppingCartResponse.Results is not null || shoppingCartResponse.IsSuccess)
             cart = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(shoppingCartResponse.Results));
 
-        cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
+        if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+        {
+            _couponDto = await GetCoupon(cart.CartHeader.CouponCode);
+            var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
+            cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
+            _hasDiscountCoupon = true;
+        }
+        else
+        {
+            cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
+            _hasDiscountCoupon = false;
+        }
 
         _isLoading = false;
 
-        return cart;
+        _cart = cart;
     }
 
     private decimal CalculateTotalCartPrice(IEnumerable<CartDetailsDto> cartDetailsDtos)
@@ -78,5 +98,55 @@ public partial class Index
         }
 
         return cartTotal;
+    }
+
+    class CartCouponModel
+    {
+        public string CouponCode { get; set; }
+    }
+
+    private async Task ApplyCouponToUser()
+    {
+        var userId = AuthenticationState.GetAuthenticationStateAsync()
+            .Result.User.Claims.
+            FirstOrDefault(c => c.Type == "sub")?.Value;
+
+        var couponCode = CartCouponCode.CouponCode;
+
+        if (!string.IsNullOrEmpty(couponCode))
+        {
+            var response = await ShoppingCartService.ApplyCouponAsync<ResponseDto>(userId, couponCode);
+
+
+            if (response is not null || response.IsSuccess)
+            {
+                _cart = new();
+                await GetCartDtoByUserIdAsync();
+            }
+        }
+    }
+
+    private async Task RemoveCouponFromUser()
+    {
+        var userId = AuthenticationState.GetAuthenticationStateAsync()
+            .Result.User.Claims.
+            FirstOrDefault(c => c.Type == "sub")?.Value;
+
+        var response = await ShoppingCartService.RemoveCouponAsync<ResponseDto>(userId);
+
+        if (response is not null || response.IsSuccess)
+        {
+            _cart = new();
+            await GetCartDtoByUserIdAsync();
+        }
+    }
+
+    private async Task<CouponDto> GetCoupon(string couponCode)
+    {
+        var response = await CouponService.GetCouponByCodeNameAsync<ResponseDto>(couponCode);
+
+        var coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Results));
+
+        return coupon;
     }
 }

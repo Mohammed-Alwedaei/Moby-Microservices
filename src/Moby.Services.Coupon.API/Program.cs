@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Moby.Services.Coupon.API.DbContexts;
 using Moby.Services.Coupon.API.Mapper;
+using Moby.Services.Coupon.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,7 +59,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 /* Dependency Injection (DI) Configuration Start */
 
-
+builder.Services.AddScoped<ICouponManager, CouponManager>();
 
 /* Dependency Injection (DI) Configuration End */
 

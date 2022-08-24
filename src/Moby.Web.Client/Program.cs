@@ -17,6 +17,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, BffAuthenticationStatePr
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
 
 builder.Services.AddTransient<AntiforgeryHandler>();
 

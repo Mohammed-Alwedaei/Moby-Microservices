@@ -89,6 +89,14 @@ app.UseEndpoints(endpoints =>
     endpoints.MapRemoteBffApiEndpoint(
             "/api/carts", "https://localhost:7008/api/carts")
         .RequireAccessToken(TokenType.User);
+
+    endpoints.MapRemoteBffApiEndpoint(
+            "/api/cartcoupons", "https://localhost:7008/api/cartcoupons")
+        .RequireAccessToken(TokenType.User);
+
+    endpoints.MapRemoteBffApiEndpoint(
+            "/api/coupons", "https://localhost:7081/api/coupons")
+        .RequireAccessToken(TokenType.User);
 });
 
 app.Run();

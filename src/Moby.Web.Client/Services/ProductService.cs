@@ -1,5 +1,5 @@
-﻿using Moby.Web.Client.Services.IServices;
-using Moby.Web.Shared;
+﻿using Moby.Web.Shared;
+using Moby.Web.Client.Services.IServices;
 using Moby.Web.Shared.Models;
 
 namespace Moby.Web.Client.Services;

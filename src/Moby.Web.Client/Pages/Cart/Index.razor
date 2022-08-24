@@ -68,14 +68,38 @@
                     <hr />
                     <div class="row">
                         <div class="col-6">
-                            <span>Coupon:</span>
-                            <input />
-                            <button type="submit" class="btn-success">Apply</button>
+                            @if (string.IsNullOrEmpty(_cart.CartHeader.CouponCode))
+                            {
+                                <EditForm Model="CartCouponCode" OnValidSubmit="ApplyCouponToUser">
+                                    <InputText class="form-control form-control-lg"
+                                               @bind-Value="CartCouponCode.CouponCode" 
+                                               placeholder="Coupon Code" />
+            
+                                    <div class="my-3">
+                                        <button class="btn btn-primary">Apply Coupon</button>
+                                    </div>
+                                </EditForm>
+                            }
+                            else
+                            {
+                                <EditForm Model="CartCouponCode" OnValidSubmit="RemoveCouponFromUser">
+                                    <InputText class="form-control form-control-lg"
+                                         @bind-Value="@_cart.CartHeader.CouponCode" disabled />
+
+                                    <div class="my-3">
+                                        <button class="btn btn-primary">Remove Coupon</button>
+                                    </div>
+                                </EditForm>
+                            }
                         </div>
                         <div class="col-6 text-end">
                             <span class="text-danger" style="font-size: 21px;">
                                 Order Total : @_cart.CartHeader.Total.ToString("c") <br/>
                             </span>
+                            @if (_hasDiscountCoupon)
+                            {
+                                <span class="text-success">you have @_couponDto.DiscountAmount discount</span>
+                            }
                         </div>
                     </div>
                 </div>

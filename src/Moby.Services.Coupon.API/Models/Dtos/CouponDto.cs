@@ -9,5 +9,5 @@ public class CouponDto
 
     public string Code { get; set; }
 
-    public double DiscountAmount { get; set; }
+    public decimal DiscountAmount { get; set; }
 }
