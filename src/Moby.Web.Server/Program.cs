@@ -95,6 +95,10 @@ app.UseEndpoints(endpoints =>
         .RequireAccessToken(TokenType.User);
 
     endpoints.MapRemoteBffApiEndpoint(
+            "/api/checkouts", "https://localhost:7008/api/checkouts")
+        .RequireAccessToken(TokenType.User);
+
+    endpoints.MapRemoteBffApiEndpoint(
             "/api/coupons", "https://localhost:7081/api/coupons")
         .RequireAccessToken(TokenType.User);
 });

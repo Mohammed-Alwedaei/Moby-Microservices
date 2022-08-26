@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Moby.Service.ShoppingCart.API.Messages;
 using Moby.Service.ShoppingCart.API.Models.Dto;
 using Moby.Service.ShoppingCart.API.Repository;
 

@@ -84,24 +84,6 @@ public class BaseService : IBaseService
         }
     }
 
-    public async Task<string> GetAccessToken()
-    {
-        HttpRequestMessage message = new();
-
-        message.Headers.Add("Accept", "application/json");
-        message.RequestUri = new Uri("https://localhost:7085/GetToken");
-
-        message.Method = HttpMethod.Get;
-
-        _httpClient.DefaultRequestHeaders.Clear();
-
-        var response = await _httpClient.SendAsync(message);
-
-        var token = await response.Content.ReadAsStringAsync();
-
-        return token;
-    }
-
     public void Dispose()
     {
         GC.SuppressFinalize(true);

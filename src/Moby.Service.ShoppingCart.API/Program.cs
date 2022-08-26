@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using Moby.Service.ShoppingCart.API.DbContexts;
 using Moby.Service.ShoppingCart.API.Mapper;
 using Moby.Service.ShoppingCart.API.Repository;
+using Moby.ServiceBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,11 +67,12 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 /* Automapper Configuration End */
 
-/*  */
+/* Custom Managers Dependency Injection */
 
 builder.Services.AddScoped<ICartManager, CartManager>();
+builder.Services.AddScoped<IMessageBusManager, MessageBusManager>();
 
-/*  */
+/* Custom Managers Dependency Injection */
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>

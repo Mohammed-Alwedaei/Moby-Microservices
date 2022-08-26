@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Moby.Service.ShoppingCart.API.DbContexts;
 using Moby.Service.ShoppingCart.API.Models;
 using Moby.Service.ShoppingCart.API.Models.Dto;
+using Moby.ServiceBus;
 
 namespace Moby.Service.ShoppingCart.API.Repository;
 
 public class CartManager : ICartManager
 {
-    private ApplicationDbContext _db;
-    private IMapper _mapper;
+    private readonly ApplicationDbContext _db;
+    private readonly IMapper _mapper;
 
     public CartManager(ApplicationDbContext db, IMapper mapper)
     {

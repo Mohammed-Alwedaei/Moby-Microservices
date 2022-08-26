@@ -69,4 +69,14 @@ public class ShoppingCartService : BaseService, IShoppingCartService
             Url = $"api/CartCoupons/{userId}"
         });
     }
+
+    public async Task<T> CheckoutAsync<T>(CartHeaderDto cartHeader)
+    {
+        return await SendAsync<T>(new HttpRequestModel
+        {
+            HttpMethodTypes = SD.HttpMethodTypes.POST,
+            Data = cartHeader,
+            Url = "api/checkouts"
+        });
+    }
 }

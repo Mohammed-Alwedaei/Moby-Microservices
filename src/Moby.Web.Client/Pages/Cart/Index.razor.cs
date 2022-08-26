@@ -50,7 +50,11 @@ public partial class Index
         var shoppingCartResponse = await ShoppingCartService.RemoveProductFromCartAsync<ResponseDto>(cartDetailsId);
 
         if (shoppingCartResponse.Results is not null || shoppingCartResponse.IsSuccess)
+        {
             await JsRuntime.InvokeVoidAsync("alert", "Product Deleted", "success");
+            await GetCartDtoByUserIdAsync();
+
+        }
 
         await InvokeAsync(StateHasChanged);
     }

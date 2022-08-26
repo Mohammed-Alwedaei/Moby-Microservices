@@ -72,9 +72,9 @@
                             {
                                 <EditForm Model="CartCouponCode" OnValidSubmit="ApplyCouponToUser">
                                     <InputText class="form-control form-control-lg"
-                                               @bind-Value="CartCouponCode.CouponCode" 
-                                               placeholder="Coupon Code" />
-            
+                                       @bind-Value="CartCouponCode.CouponCode"
+                                       placeholder="Coupon Code" />
+
                                     <div class="my-3">
                                         <button class="btn btn-primary">Apply Coupon</button>
                                     </div>
@@ -84,7 +84,7 @@
                             {
                                 <EditForm Model="CartCouponCode" OnValidSubmit="RemoveCouponFromUser">
                                     <InputText class="form-control form-control-lg"
-                                         @bind-Value="@_cart.CartHeader.CouponCode" disabled />
+                                       @bind-Value="@_cart.CartHeader.CouponCode" disabled />
 
                                     <div class="my-3">
                                         <button class="btn btn-primary">Remove Coupon</button>
@@ -94,7 +94,7 @@
                         </div>
                         <div class="col-6 text-end">
                             <span class="text-danger" style="font-size: 21px;">
-                                Order Total : @_cart.CartHeader.Total.ToString("c") <br/>
+                                Order Total : @_cart.CartHeader.Total.ToString("c") <br />
                             </span>
                             @if (_hasDiscountCoupon)
                             {
@@ -107,9 +107,7 @@
                     <div class="col-6 col-md-3 offset-md-6">
                     </div>
                     <div class="col-6 col-md-3">
-                        <a class="btn btn-success form-control">
-                            <span>Checkout</span>
-                        </a>
+                        <NavLink href="cart/checkout" class="btn btn-success">Checkout</NavLink>
                     </div>
                 </div>
             </div>

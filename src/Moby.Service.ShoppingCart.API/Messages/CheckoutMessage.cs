@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Moby.Service.ShoppingCart.API.Models.Dto;
+using Moby.ServiceBus;
 
-namespace Moby.Web.Shared.Models.Cart;
-public class CartHeaderDto
+namespace Moby.Service.ShoppingCart.API.Messages;
+
+public class CheckoutMessage : BaseMessageModel
 {
     public int Id { get; set; }
 
@@ -15,7 +13,7 @@ public class CartHeaderDto
 
     public decimal Total { get; set; }
 
-    public decimal TotalAfterDiscount { get; set; }
+    public decimal? TotalAfterDiscount { get; set; }
 
     public DateTime PickUpDate { get; set; } = DateTime.Now;
 
@@ -31,5 +29,7 @@ public class CartHeaderDto
 
     public string? Cvv { get; set; }
 
-    public string? ExpiryDate { get; set; }
+    public int? ItemsCount { get; set; }
+
+    public IEnumerable<CartDetailsDto>? Details { get; set; }
 }
