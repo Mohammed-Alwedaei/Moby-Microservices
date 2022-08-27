@@ -10,13 +10,11 @@ public class CartDetailsDto
 
     public int CartHeaderId { get; set; }
 
-    [ForeignKey(nameof(CartHeaderId))]
-    public virtual CartHeaderDto? CartHeader { get; set; }
+    public virtual CartHeaderDto CartHeader { get; set; }
 
     public int ProductId { get; set; }
 
-    [ForeignKey(nameof(ProductId))]
-    public virtual ProductModel? Product { get; set; }
+    public virtual ProductModel Product { get; set; }
 
     public int Count { get; set; }
 }

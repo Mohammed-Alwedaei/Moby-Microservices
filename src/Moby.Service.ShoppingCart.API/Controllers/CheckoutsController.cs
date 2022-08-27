@@ -63,6 +63,7 @@ public class CheckoutsController : ControllerBase
             var connectionString = _configuration.GetConnectionString("AzureServiceBus");
 
             await _messageBusManager.PublishMessage(checkoutMessage, "checkouttopic", connectionString);
+            await _cartManager.ClearCartByIdAsync(checkoutMessage.UserId);
 
             return Ok(Response);
         }

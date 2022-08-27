@@ -30,4 +30,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Moby.ServiceBus\Moby.ServiceBus.csproj" />
+  </ItemGroup>
+
 </Project>

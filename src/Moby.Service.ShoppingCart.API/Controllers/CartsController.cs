@@ -109,12 +109,12 @@ public class CartsController : ControllerBase
         }
     }
 
-    [HttpDelete("/api/[controller]/clear/{cartId:int}")]
-    public async Task<IActionResult> ClearCartByIdAsync(int cartId)
+    [HttpDelete("/api/[controller]/clear/{userId:int}")]
+    public async Task<IActionResult> ClearCartByIdAsync(string userId)
     {
         try
         {
-            var isSuccessDeletion = await _cartManager.ClearCartByIdAsync(cartId);
+            var isSuccessDeletion = await _cartManager.ClearCartByIdAsync(userId);
 
             Response.Results = isSuccessDeletion;
 

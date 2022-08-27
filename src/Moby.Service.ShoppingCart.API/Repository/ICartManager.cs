@@ -12,7 +12,7 @@ public interface ICartManager
 
     Task<bool> RemoveProductFromCartAsync(int cartDetailsId);
 
-    Task<bool> ClearCartByIdAsync(int cartId);
+    Task<bool> ClearCartByIdAsync(string userId);
 
     Task<bool> ApplyCoupon(string userId, string couponCode);
 

@@ -44,7 +44,7 @@ namespace Moby.Service.ShoppingCart.API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartDetails");
+                    b.ToTable("CartDetails", (string)null);
                 });
 
             modelBuilder.Entity("Moby.Service.ShoppingCart.API.Models.CartHeaderModel", b =>
@@ -63,7 +63,7 @@ namespace Moby.Service.ShoppingCart.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CartHeaders");
+                    b.ToTable("CartHeaders", (string)null);
                 });
 
             modelBuilder.Entity("Moby.Service.ShoppingCart.API.Models.ProductModel", b =>
@@ -94,7 +94,7 @@ namespace Moby.Service.ShoppingCart.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Moby.Service.ShoppingCart.API.Models.CartDetailsModel", b =>

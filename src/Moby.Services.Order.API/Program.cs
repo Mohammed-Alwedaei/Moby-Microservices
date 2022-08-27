@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Moby.ServiceBus;
 using Moby.Services.Order.API.DbContexts;
 using Moby.Services.Order.API.Extensions;
 using Moby.Services.Order.API.Messaging;
@@ -65,6 +66,7 @@ builder.Services.AddSingleton(new OrderManager(optionsBuilder.Options));
 /* Custom Managers Dependency Injection */
 
 builder.Services.AddSingleton<IServiceBusConsumer, ServiceBusConsumer>();
+builder.Services.AddSingleton<IMessageBusManager, MessageBusManager>();
 
 /* Custom Managers Dependency Injection */
 

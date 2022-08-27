@@ -144,10 +144,10 @@ public class CartManager : ICartManager
         }
     }
 
-    public async Task<bool> ClearCartByIdAsync(int cartId)
+    public async Task<bool> ClearCartByIdAsync(string userId)
     {
         var cartHeaderFromDb = await _db.CartHeaders
-            .FirstOrDefaultAsync(h => h.Id == cartId);
+            .FirstOrDefaultAsync(h => h.UserId == userId);
 
         if (cartHeaderFromDb is not null)
         {

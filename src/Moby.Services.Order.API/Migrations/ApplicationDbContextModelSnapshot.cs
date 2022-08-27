@@ -49,7 +49,7 @@ namespace Moby.Services.Order.API.Migrations
 
                     b.HasIndex("CartHeaderId");
 
-                    b.ToTable("Details");
+                    b.ToTable("Details", (string)null);
                 });
 
             modelBuilder.Entity("Moby.Services.Order.API.Models.OrderHeaderModel", b =>
@@ -107,7 +107,7 @@ namespace Moby.Services.Order.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Headers");
+                    b.ToTable("Headers", (string)null);
                 });
 
             modelBuilder.Entity("Moby.Services.Order.API.Models.OrderDetailsModel", b =>
