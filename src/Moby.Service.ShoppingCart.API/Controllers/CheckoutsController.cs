@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Moby.Service.ShoppingCart.API.Messages;
-using Moby.Service.ShoppingCart.API.Models.Dto;
-using Moby.Service.ShoppingCart.API.Repository;
 using Moby.ServiceBus;
+using Moby.Services.ShoppingCart.API.Messages;
+using Moby.Services.ShoppingCart.API.Models.Dto;
+using Moby.Services.ShoppingCart.API.Repository;
 
-namespace Moby.Service.ShoppingCart.API.Controllers;
+namespace Moby.Services.ShoppingCart.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -15,14 +15,19 @@ public class CheckoutsController : ControllerBase
     private readonly ICartManager _cartManager;
     private readonly IMessageBusManager _messageBusManager;
     private readonly IConfiguration _configuration;
+    private readonly ICouponManager _couponManager;
     protected ResponseDto Response;
 
-    public CheckoutsController(ICartManager cartManager, IMessageBusManager messageBusManager, IConfiguration configuration)
+    public CheckoutsController(ICartManager cartManager, 
+        IMessageBusManager messageBusManager, 
+        IConfiguration configuration, 
+        ICouponManager couponManager)
     {
         _cartManager = cartManager;
         Response = new();
         _messageBusManager = messageBusManager;
         _configuration = configuration;
+        _couponManager = couponManager;
     }
 
     [HttpPost]
@@ -35,8 +40,25 @@ public class CheckoutsController : ControllerBase
 
             if (cartFromDb is null)
                 return BadRequest();
-            
+
             checkout.Details = cartFromDb.CartDetails;
+
+            if (!string.IsNullOrEmpty(checkout.CouponCode))
+            {
+                var coupon = await _couponManager.GetCouponAsync(checkout.CouponCode);
+
+                if (coupon.DiscountAmount != checkout.TotalAfterDiscount)
+                {
+                    Response.IsSuccess = false;
+                    Response.Errors = new List<string>
+                    {
+                        "The discount amount has changed, Please confirm"
+                    };
+                    Response.Message = "The discount amount has changed, Please confirm";
+
+                    return BadRequest(Response);
+                }
+            }
 
             var connectionString = _configuration.GetConnectionString("AzureServiceBus");
 

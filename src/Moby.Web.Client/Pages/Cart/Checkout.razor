@@ -2,6 +2,12 @@
 
 @if (!_isLoading)
 {
+    @if (_hasErrors)
+    {
+        <div class="alert alert-danger" role="alert">
+            <p class="mb-0">@_errorMessage</p>
+        </div>
+    }
     <EditForm Model="_cart" OnValidSubmit="BeginCheckoutFlow">
         <div>
             <span style="font-size:25px;" class="text-warning">Enter details and place order :</span>

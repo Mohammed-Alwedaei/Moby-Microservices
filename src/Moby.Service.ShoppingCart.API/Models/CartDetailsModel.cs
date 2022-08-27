@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.PortableExecutable;
 
-namespace Moby.Service.ShoppingCart.API.Models;
+namespace Moby.Services.ShoppingCart.API.Models;
 
 public class CartDetailsModel
 {

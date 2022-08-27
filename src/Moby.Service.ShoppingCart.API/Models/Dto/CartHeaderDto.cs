@@ -1,4 +1,4 @@
-﻿namespace Moby.Service.ShoppingCart.API.Models.Dto;
+﻿namespace Moby.Services.ShoppingCart.API.Models.Dto;
 
 public class CartHeaderDto
 {
@@ -6,5 +6,5 @@ public class CartHeaderDto
 
     public string? UserId { get; set; }
 
-    public string? CouponCode { get; set; } 
+    public string? CouponCode { get; set; }
 }

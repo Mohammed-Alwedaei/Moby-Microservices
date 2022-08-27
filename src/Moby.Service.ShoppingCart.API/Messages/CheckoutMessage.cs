@@ -1,7 +1,7 @@
-﻿using Moby.Service.ShoppingCart.API.Models.Dto;
-using Moby.ServiceBus;
+﻿using Moby.ServiceBus;
+using Moby.Services.ShoppingCart.API.Models.Dto;
 
-namespace Moby.Service.ShoppingCart.API.Messages;
+namespace Moby.Services.ShoppingCart.API.Messages;
 
 public class CheckoutMessage : BaseMessageModel
 {

@@ -1,6 +1,6 @@
-﻿using Moby.Service.ShoppingCart.API.Models.Dto;
+﻿using Moby.Services.ShoppingCart.API.Models.Dto;
 
-namespace Moby.Service.ShoppingCart.API.Repository;
+namespace Moby.Services.ShoppingCart.API.Repository;
 
 public interface ICartManager
 {

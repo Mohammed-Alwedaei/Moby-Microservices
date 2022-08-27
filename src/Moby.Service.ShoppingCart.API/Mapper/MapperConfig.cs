@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Moby.Service.ShoppingCart.API.Models;
-using Moby.Service.ShoppingCart.API.Models.Dto;
+using Moby.Services.ShoppingCart.API.Models;
+using Moby.Services.ShoppingCart.API.Models.Dto;
 
-namespace Moby.Service.ShoppingCart.API.Mapper;
+namespace Moby.Services.ShoppingCart.API.Mapper;
 
 public class MapperConfig
 {

@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Web.Shared", "Moby.Web
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Web.Client", "Moby.Web.Client\Moby.Web.Client.csproj", "{93521810-2700-45DA-BF2E-EB595A64B694}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Service.ShoppingCart.API", "Moby.Service.ShoppingCart.API\Moby.Service.ShoppingCart.API.csproj", "{31D66F73-E19F-401D-AE8F-49FECD6FBBAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Services.ShoppingCart.API", "Moby.Service.ShoppingCart.API\Moby.Services.ShoppingCart.API.csproj", "{31D66F73-E19F-401D-AE8F-49FECD6FBBAD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B32E082B-F79A-43DF-8D3E-C1D50DD4CDAB}"
 	ProjectSection(SolutionItems) = preProject
@@ -30,7 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.ServiceBus", "Moby.ServiceBus\Moby.ServiceBus.csproj", "{411695F7-C130-4D82-B3C2-BBC95FCE6557}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moby.Services.Order.API", "Moby.Services.Order.API\Moby.Services.Order.API.csproj", "{6975C69B-C453-4DBF-81C5-BF4C9070C76B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Services.Order.API", "Moby.Services.Order.API\Moby.Services.Order.API.csproj", "{6975C69B-C453-4DBF-81C5-BF4C9070C76B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

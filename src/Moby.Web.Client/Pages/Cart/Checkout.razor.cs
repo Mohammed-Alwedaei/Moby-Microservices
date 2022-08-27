@@ -33,6 +33,9 @@ public partial class Checkout
 
     private bool _isLoading = false;
 
+    private bool _hasErrors = false;
+    private string _errorMessage = "";
+
     protected override async Task OnInitializedAsync()
     {
         await GetCartDtoByUserIdAsync();
@@ -57,12 +60,15 @@ public partial class Checkout
         {
             _couponDto = await GetCoupon(cart.CartHeader.CouponCode);
             var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
+
             cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
+            cart.CartHeader.TotalAfterDiscount = _couponDto.DiscountAmount;
             _hasDiscountCoupon = true;
         }
         else
         {
             cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
+            cart.CartHeader.TotalAfterDiscount = 0;
             _hasDiscountCoupon = false;
         }
 
@@ -95,10 +101,18 @@ public partial class Checkout
     private async Task BeginCheckoutFlow()
     {
         var cart = _cart;
+        _hasErrors = false;
+
         var response = await ShoppingCartService.CheckoutAsync<ResponseDto>(_cart.CartHeader);
 
-        if (response is null || response.IsSuccess is false)
+        if (!string.IsNullOrEmpty(response.Message) && !response.IsSuccess)
+        {
+            _hasErrors = true;
+
+            _errorMessage = response.Message;
+
             return;
+        }
 
         NavigationManager.NavigateTo("/cart/orders/confirmed");
     }

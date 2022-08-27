@@ -1,8 +1,8 @@
-﻿namespace Moby.Service.ShoppingCart.API.Models.Dto;
+﻿namespace Moby.Services.ShoppingCart.API.Models.Dto;
 
 public class CartDto
 {
     public CartHeaderDto CartHeader { get; set; }
 
-    public IEnumerable<CartDetailsDto> CartDetails { get; set; }  
+    public IEnumerable<CartDetailsDto> CartDetails { get; set; }
 }

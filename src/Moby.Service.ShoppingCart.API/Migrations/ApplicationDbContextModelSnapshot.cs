@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Moby.Service.ShoppingCart.API.DbContexts;
+using Moby.Services.ShoppingCart.API.DbContexts;
 
 #nullable disable
 

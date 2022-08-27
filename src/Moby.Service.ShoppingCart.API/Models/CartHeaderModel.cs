@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Moby.Service.ShoppingCart.API.Models;
+namespace Moby.Services.ShoppingCart.API.Models;
 
 public class CartHeaderModel
 {
@@ -9,5 +9,5 @@ public class CartHeaderModel
 
     public string? UserId { get; set; }
 
-    public string? CouponCode { get; set; } 
+    public string? CouponCode { get; set; }
 }

@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Moby.Services.ShoppingCart.API.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.PortableExecutable;
 
-namespace Moby.Service.ShoppingCart.API.Models.Dto;
+namespace Moby.Services.ShoppingCart.API.Models.Dto;
 
 public class CartDetailsDto
 {

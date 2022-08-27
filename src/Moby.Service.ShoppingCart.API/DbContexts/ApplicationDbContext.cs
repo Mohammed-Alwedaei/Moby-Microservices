@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Moby.Service.ShoppingCart.API.Models;
-using Moby.Service.ShoppingCart.API.Models.Dto;
+using Moby.Services.ShoppingCart.API.Models;
 
-namespace Moby.Service.ShoppingCart.API.DbContexts;
+namespace Moby.Services.ShoppingCart.API.DbContexts;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) 
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        
+
     }
 
     public DbSet<CartHeaderModel> CartHeaders { get; set; }

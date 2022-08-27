@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Moby.Service.ShoppingCart.API.Models.Dto;
-using Moby.Service.ShoppingCart.API.Repository;
+using Moby.Services.ShoppingCart.API.Models.Dto;
+using Moby.Services.ShoppingCart.API.Repository;
 
-namespace Moby.Service.ShoppingCart.API.Controllers;
+namespace Moby.Services.ShoppingCart.API.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class CartCouponsController : ControllerBase

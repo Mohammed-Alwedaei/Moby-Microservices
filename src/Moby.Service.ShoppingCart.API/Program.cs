@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Moby.Service.ShoppingCart.API.DbContexts;
-using Moby.Service.ShoppingCart.API.Mapper;
-using Moby.Service.ShoppingCart.API.Repository;
 using Moby.ServiceBus;
+using Moby.Services.ShoppingCart.API.DbContexts;
+using Moby.Services.ShoppingCart.API.Mapper;
+using Moby.Services.ShoppingCart.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +70,10 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ICartManager, CartManager>();
 builder.Services.AddScoped<IMessageBusManager, MessageBusManager>();
+
+builder.Services.AddScoped<ICouponManager, CouponManager>();
+builder.Services.AddHttpClient<ICouponManager, CouponManager>(c => c.BaseAddress = new Uri
+    (builder.Configuration.GetValue<string>("ServicesUrls:CouponService")));
 
 /* Custom Managers Dependency Injection */
 
