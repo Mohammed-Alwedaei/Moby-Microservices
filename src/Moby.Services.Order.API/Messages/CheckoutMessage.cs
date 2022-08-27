@@ -1,9 +1,11 @@
-﻿using Moby.Service.ShoppingCart.API.Models.Dto;
-using Moby.ServiceBus;
+﻿
 
-namespace Moby.Service.ShoppingCart.API.Messages;
+using Moby.Services.Order.API.Models;
+using Moby.Services.Order.API.Models.Dto;
 
-public class CheckoutMessage : BaseMessageModel
+namespace Moby.Services.Order.API.Messages;
+
+public class CheckoutMessage
 {
     public int Id { get; set; }
 

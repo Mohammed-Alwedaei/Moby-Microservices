@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Moby.Service.ShoppingCart.API.DbContexts;
-using Moby.Service.ShoppingCart.API.Mapper;
-using Moby.Service.ShoppingCart.API.Repository;
-using Moby.ServiceBus;
+using Moby.Services.Order.API.DbContexts;
+using Moby.Services.Order.API.Extensions;
+using Moby.Services.Order.API.Messaging;
+using Moby.Services.Order.API.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,23 +53,18 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IOrderManager, OrderManager>();
+
+var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+builder.Services.AddSingleton(new OrderManager(optionsBuilder.Options));
 
 /* Database (EF6) Dependency Injection (DI) Configuration End */
 
-/* Automapper Configuration Start */
-
-var mapper = MapperConfig.RegisterMaps().CreateMapper();
-
-builder.Services.AddSingleton(mapper);
-
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-/* Automapper Configuration End */
-
 /* Custom Managers Dependency Injection */
 
-builder.Services.AddScoped<ICartManager, CartManager>();
-builder.Services.AddScoped<IMessageBusManager, MessageBusManager>();
+builder.Services.AddSingleton<IServiceBusConsumer, ServiceBusConsumer>();
 
 /* Custom Managers Dependency Injection */
 
@@ -117,5 +112,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseServiceBusConsumer();
 
 app.Run();
