@@ -5,7 +5,6 @@ namespace Moby.Services.ShoppingCart.API.Models.Dto;
 
 public class ProductDto
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int Id { get; set; }
 
     public string? Name { get; set; }
