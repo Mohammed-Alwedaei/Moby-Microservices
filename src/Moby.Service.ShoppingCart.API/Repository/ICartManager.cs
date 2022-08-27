@@ -1,4 +1,5 @@
-﻿using Moby.Services.ShoppingCart.API.Models.Dto;
+﻿using Moby.Services.ShoppingCart.API.Models;
+using Moby.Services.ShoppingCart.API.Models.Dto;
 
 namespace Moby.Services.ShoppingCart.API.Repository;
 

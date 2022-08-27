@@ -5,6 +5,7 @@ using Moby.ServiceBus;
 using Moby.Services.ShoppingCart.API.DbContexts;
 using Moby.Services.ShoppingCart.API.Mapper;
 using Moby.Services.ShoppingCart.API.Repository;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,23 +89,23 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("ApiScope", options =>
     {
-        options.RequireAuthenticatedUser();
-        options.RequireClaim("scope", "mango");
+        options.AddPolicy("ApiScope", options =>
+        {
+            options.RequireAuthenticatedUser();
+            options.RequireClaim("scope", "mango");
+        });
     });
-});
 
 builder.Services.AddCors(options =>
-{
-    options.AddPolicy("Moby.Client", config =>
     {
-        config.WithOrigins("https://localhost:7018")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        options.AddPolicy("Moby.Client", config =>
+        {
+            config.WithOrigins("https://localhost:7018")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
     });
-});
 
 var app = builder.Build();
 
@@ -116,6 +117,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();

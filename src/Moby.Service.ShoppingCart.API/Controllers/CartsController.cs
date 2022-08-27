@@ -4,22 +4,27 @@ using Moby.Services.ShoppingCart.API.Models.Dto;
 using Moby.Services.ShoppingCart.API.Repository;
 
 namespace Moby.Services.ShoppingCart.API.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class CartsController : ControllerBase
 {
     private readonly ICartManager _cartManager;
+    private readonly ILogger<CartsController> _logger;
     protected ResponseDto Response;
 
-    public CartsController(ICartManager cartManager)
+    public CartsController(ICartManager cartManager, ILogger<CartsController> logger)
     {
         _cartManager = cartManager;
         Response = new();
+        _logger = logger;
     }
 
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetCartById(string userId)
     {
+        _logger.LogInformation("the user id is: {userId}", userId);
+
         try
         {
             var cart = await _cartManager.GetCartByUserIdAsync(userId);
@@ -109,7 +114,7 @@ public class CartsController : ControllerBase
         }
     }
 
-    [HttpDelete("/api/[controller]/clear/{userId:int}")]
+    [HttpDelete("/api/[controller]/clear/{userId}")]
     public async Task<IActionResult> ClearCartByIdAsync(string userId)
     {
         try

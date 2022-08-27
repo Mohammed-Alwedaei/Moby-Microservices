@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Moby.ServiceBus;
 using Moby.Services.ShoppingCart.API.DbContexts;
 using Moby.Services.ShoppingCart.API.Models;
 using Moby.Services.ShoppingCart.API.Models.Dto;
@@ -16,14 +15,15 @@ public class CartManager : ICartManager
     {
         _db = db;
         _mapper = mapper;
+
     }
 
     public async Task<CartDto> GetCartByUserIdAsync(string userId)
     {
         var cartHeaderFromDb = await _db.CartHeaders
-            .FirstOrDefaultAsync(h => h.UserId == userId);
+            .FirstOrDefaultAsync(x => x.UserId == userId);
 
-        var cart = new CartModel()
+        var cart = new CartModel
         {
             CartHeader = cartHeaderFromDb
         };
