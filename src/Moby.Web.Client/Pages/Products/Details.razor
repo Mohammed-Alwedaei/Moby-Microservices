@@ -55,7 +55,8 @@
             CartHeader = new()
             {
                 UserId = AuthenticationState.GetAuthenticationStateAsync()
-                    .Result.User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value
+                    .Result.User.Claims
+                    .Where(u => u.Type == "sub")?.FirstOrDefault()?.Value
             }
         };
 
@@ -84,7 +85,7 @@
 
         var shoppingCartResponse = await ShoppingCartService.CreateCartAsync<ResponseDto>(cart);
 
-        if (shoppingCartResponse is not null || shoppingCartResponse.IsSuccess == false)
+        if (shoppingCartResponse is not null || shoppingCartResponse.IsSuccess == true)
         {
             NavigationManager.NavigateTo("/");
         }

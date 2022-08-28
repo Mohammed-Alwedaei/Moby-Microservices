@@ -28,9 +28,9 @@ public class CartManager : ICartManager
             CartHeader = cartHeaderFromDb
         };
 
-        /*cart.CartDetails = _db.CartDetails
+        cart.CartDetails = _db.CartDetails
             .Where(d => d.CartHeaderId == cartHeaderFromDb.Id)
-            .Include(d => d.Product);*/
+            .Include(d => d.Product);
 
         return _mapper.Map<CartModel, CartDto>(cart);
     }

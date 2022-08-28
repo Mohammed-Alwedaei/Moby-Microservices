@@ -53,7 +53,6 @@ public partial class Index
         {
             await JsRuntime.InvokeVoidAsync("alert", "Product Deleted", "success");
             await GetCartDtoByUserIdAsync();
-
         }
 
         await InvokeAsync(StateHasChanged);
@@ -65,28 +64,40 @@ public partial class Index
 
         var cart = new CartDto();
 
-        var userId = AuthenticationState.GetAuthenticationStateAsync()
-            .Result.User.Claims.
-            FirstOrDefault(c => c.Type == "sub")?.Value;
+        var userId = AuthenticationState
+            .GetAuthenticationStateAsync()
+            .Result.User.Claims
+            .FirstOrDefault(c => c.Type == "sub")?.Value;
 
-        var shoppingCartResponse = await ShoppingCartService.GetCartByUserIdAsync<ResponseDto>(userId);
+        var shoppingCartResponse = await ShoppingCartService
+            .GetCartByUserIdAsync<ResponseDto>(userId);
 
-        if (shoppingCartResponse.Results is not null || shoppingCartResponse.IsSuccess)
-            cart = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(shoppingCartResponse.Results));
-
-        if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+        if (shoppingCartResponse.IsSuccess)
         {
-            _couponDto = await GetCoupon(cart.CartHeader.CouponCode);
-            var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
-            cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
-            _hasDiscountCoupon = true;
-        }
-        else
-        {
-            cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
-            _hasDiscountCoupon = false;
-        }
+            cart = JsonConvert
+                .DeserializeObject<CartDto>(Convert.ToString(shoppingCartResponse.Results));
 
+            if (cart.CartHeader is null && !cart.CartDetails.Any())
+            {
+                cart = new();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+                {
+                    _couponDto = await GetCoupon(cart.CartHeader.CouponCode);
+                    var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
+                    cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
+                    _hasDiscountCoupon = true;
+                }
+                else
+                {
+                    cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
+                    _hasDiscountCoupon = false;
+                }
+            }
+        }
+        
         _isLoading = false;
 
         _cart = cart;

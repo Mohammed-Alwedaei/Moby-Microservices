@@ -12,11 +12,13 @@ namespace Moby.Services.Product.API.Controllers;
 public class ProductsController : ControllerBase
 {
     private readonly IProductRepository _productRepository;
+    private readonly ILogger<ProductsController> _logger;
     protected ResponseDto _response;
 
-    public ProductsController(IProductRepository productRepository)
+    public ProductsController(IProductRepository productRepository, ILogger<ProductsController> logger)
     {
         _productRepository = productRepository;
+        _logger = logger;
         _response = new();
     }
 
@@ -28,6 +30,9 @@ public class ProductsController : ControllerBase
         try
         {
             var productsFromDb = await _productRepository.GetProductByIdAsync(id);
+
+            _logger.LogInformation("GET: product api / GetProductById: {id}", id);
+
             _response.Results = productsFromDb;
         }
         catch (Exception exception)

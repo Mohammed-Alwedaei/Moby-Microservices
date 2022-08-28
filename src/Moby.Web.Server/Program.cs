@@ -83,7 +83,7 @@ app.MapControllers()
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRemoteBffApiEndpoint(
-            "/api/products", "https://localhost:7190/api/products")
+            "/api/products", "https://localhost:7190/api/Products")
         .RequireAccessToken(TokenType.User);
 
     endpoints.MapRemoteBffApiEndpoint(

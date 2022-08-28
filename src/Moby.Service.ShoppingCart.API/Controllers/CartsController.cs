@@ -23,8 +23,6 @@ public class CartsController : ControllerBase
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetCartById(string userId)
     {
-        _logger.LogInformation("the user id is: {userId}", userId);
-
         try
         {
             var cart = await _cartManager.GetCartByUserIdAsync(userId);
@@ -51,7 +49,7 @@ public class CartsController : ControllerBase
         try
         {
             var cart = await _cartManager.CreateCartAsync(cartToCreate);
-
+            _logger.LogInformation("Entered Cart create api endpoint the user id is:");
             Response.Results = cart;
 
             return Ok(Response);
@@ -61,7 +59,9 @@ public class CartsController : ControllerBase
             Response.IsSuccess = false;
             Response.Errors = new()
             {
-                exception.Message
+                exception.StackTrace,
+                exception.Message,
+                exception.InnerException.Message,
             };
 
             return BadRequest(Response);

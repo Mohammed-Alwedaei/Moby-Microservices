@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Moby.Web.Shared.Models.Cart;
 
-namespace Moby.Web.Shared.Models.Cart;
 public class CartDto
 {
-    public CartHeaderDto? CartHeader { get; set; }
+    public CartHeaderDto CartHeader { get; set; }
 
-    public IEnumerable<CartDetailsDto>? CartDetails { get; set; }
+    public IEnumerable<CartDetailsDto> CartDetails { get; set; }
 }

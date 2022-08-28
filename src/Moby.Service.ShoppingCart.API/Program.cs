@@ -3,9 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Moby.ServiceBus;
 using Moby.Services.ShoppingCart.API.DbContexts;
-using Moby.Services.ShoppingCart.API.Mapper;
 using Moby.Services.ShoppingCart.API.Repository;
-using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,10 +56,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 /* Database (EF6) Dependency Injection (DI) Configuration End */
 
 /* Automapper Configuration Start */
-
-var mapper = MapperConfig.RegisterMaps().CreateMapper();
-
-builder.Services.AddSingleton(mapper);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

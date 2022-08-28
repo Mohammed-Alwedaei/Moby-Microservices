@@ -1,4 +1,6 @@
-﻿namespace Moby.Web.Shared.Models;
+﻿using Newtonsoft.Json;
+
+namespace Moby.Web.Shared.Models;
 
 public class ProductDto
 {
@@ -8,6 +10,7 @@ public class ProductDto
 
     public decimal Price { get; set; }
 
+    [JsonProperty("Description")]
     public string? Description { get; set; }
 
     public string? Category { get; set; }

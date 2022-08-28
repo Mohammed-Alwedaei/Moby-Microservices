@@ -37,7 +37,6 @@ public class BaseService : IBaseService
 
             HttpResponseMessage response = null;
 
-
             switch (httpRequest.HttpMethodTypes)
             {
                 case SD.HttpMethodTypes.POST:
