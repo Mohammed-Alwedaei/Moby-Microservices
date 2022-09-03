@@ -103,7 +103,7 @@ public class ShoppingCartService : BaseService, IShoppingCartService
     public async Task<bool> CheckoutAsync(CartHeaderDto cartHeader)
     {
         var client = await HttpClient(_baseUrl, _serviceName);
-        var response = await client.PostAsJsonAsync($"/api/checkout", cartHeader);
+        var response = await client.PostAsJsonAsync($"/api/checkouts", cartHeader);
 
         if (response.IsSuccessStatusCode)
             return true;

@@ -33,5 +33,5 @@ public class CheckoutMessage : BaseMessageModel
 
     public int? ItemsCount { get; set; }
 
-    public IEnumerable<CartDetailsDto> Details { get; set; }
+    public IEnumerable<CartDetailsDto>? Details { get; set; }
 }

@@ -8,7 +8,7 @@
             <p class="mb-0">@_errorMessage</p>
         </div>
     }
-    <EditForm Model="_cart">
+    <EditForm Model="_cart" OnValidSubmit="BeginCheckoutFlow">
         <div>
             <span style="font-size:25px;" class="text-warning">Enter details and place order :</span>
             <br />
@@ -100,7 +100,7 @@
 
                             <div class="row">
                                 <div class="col-12 text-right pr-4 text-danger">
-                                   
+                                    @_cart.CartHeader.Total.Value.ToString("c") <br />
                                 </div>
                             </div>
 
