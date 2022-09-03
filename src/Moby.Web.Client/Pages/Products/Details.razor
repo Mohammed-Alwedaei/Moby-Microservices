@@ -1,7 +1,11 @@
 ﻿@page "/Products/Details"
 @using Moby.Web.Shared.Models.Cart
+@using Moby.Web.Shared
+@using Moby.Web.Shared.Models.Cart.Post
+
 
 @inject IProductService ProductService
+@inject ITokenService TokenService
 @inject IShoppingCartService ShoppingCartService
 @inject AuthenticationStateProvider AuthenticationState
 @inject NavigationManager NavigationManager
@@ -14,9 +18,7 @@
         <EditForm Model="Cart" OnValidSubmit="BeginAddToCartFlow">
             <InputNumber class="form-control form-control-lg" 
                          @bind-Value="Cart.Count" />
-            
-            
-            
+
             <div class="my-3">
                 <button class="btn btn-primary">Add to cart</button>
             </div>
@@ -28,8 +30,6 @@
     <div class="col-lg-6 col-md-12">
         <img class="img-fluid rounded-3" src="@_product.ImageUrl" />
     </div>
-    
-   
 </section>
 
 @code {
@@ -43,26 +43,23 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await ProductService.GetProductByIdAsync<ResponseDto>(ProductId);
-
-        _product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Results));
+        _product = await ProductService.GetProductByIdAsync(ProductId, "");
     }
 
     private async Task BeginAddToCartFlow()
     {
-        var cart = new CartDto()
+        var cart = new PostCartDto
         {
             CartHeader = new()
             {
                 UserId = AuthenticationState.GetAuthenticationStateAsync()
-                    .Result.User.Claims
-                    .Where(u => u.Type == "sub")?.FirstOrDefault()?.Value
+                    .Result.User.Claims.FirstOrDefault(u => u.Type == "sub")!.Value
             }
         };
 
-        var productToAddResponse = await ProductService.GetProductByIdAsync<ResponseDto>(ProductId);
+        var productToAddResponse = await ProductService.GetProductByIdAsync(ProductId, "");
 
-        var cartDetails = new CartDetailsDto
+        var cartDetails = new PostCartDetailsDto
         {
             ProductId = ProductId,
             Count = Cart.Count
@@ -70,22 +67,24 @@
 
         var productToAdd = new ProductDto();
 
-        if (productToAddResponse is null || productToAddResponse.IsSuccess)
+        if (productToAddResponse is not null)
         {
-            productToAdd = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(productToAddResponse.Results));
+            productToAdd = productToAddResponse;
         }
 
         cartDetails.Product = productToAdd;
 
-        List<CartDetailsDto> cartDetailsDto = new();
+        List<PostCartDetailsDto> cartDetailsDto = new();
 
         cartDetailsDto.Add(cartDetails);
 
         cart.CartDetails = cartDetailsDto;
 
-        var shoppingCartResponse = await ShoppingCartService.CreateCartAsync<ResponseDto>(cart);
+        var shoppingCartAccessToken = await TokenService.GetTokenAsync(ApiRoutes.Carts);
 
-        if (shoppingCartResponse is not null || shoppingCartResponse.IsSuccess == true)
+        var shoppingCartResponse = await ShoppingCartService.CreateCartAsync(cart, shoppingCartAccessToken.AccessToken);
+
+        if (shoppingCartResponse)
         {
             NavigationManager.NavigateTo("/");
         }
@@ -95,6 +94,4 @@
     {
         public int Count { get; set; } = 1;
     }
-
-    
 }

@@ -4,13 +4,13 @@ namespace Moby.Web.Client.Services.IServices;
 
 public interface IProductService
 {
-    Task<T> GetProductByIdAsync<T>(int id);
+    Task<ProductDto> GetProductByIdAsync(int id, string accessToken);
 
-    Task<T> GetProductsAsync<T>();
+    Task<List<ProductDto>> GetProductsAsync(string accessToken);
 
-    Task<T> CreateProductAsync<T>(ProductDto product);
+    Task<bool> CreateProductAsync(ProductDto product, string accessToken);
 
-    Task<T> UpdateProductAsync<T>(ProductDto product);
+    Task<bool> UpdateProductAsync(ProductDto product, string accessToken);
 
-    Task<T> DeleteProductAsync<T>(int id);
+    Task<bool> DeleteProductAsync(int id, string accessToken);
 }

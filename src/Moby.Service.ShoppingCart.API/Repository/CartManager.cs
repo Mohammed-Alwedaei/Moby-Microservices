@@ -50,6 +50,7 @@ public class CartManager : ICartManager
         }
 
         //If cart header is null create one
+
         var cartHeaderFromDb = await _db.CartHeaders
             .AsNoTracking()
             .FirstOrDefaultAsync(h => h.UserId == cartToBeCreated.CartHeader.UserId);
@@ -70,9 +71,9 @@ public class CartManager : ICartManager
         }
 
         var cartDetailsFromDb = await _db.CartDetails
-            .AsNoTracking()
-            .FirstOrDefaultAsync(d => d.Id == cartToBeCreated.CartDetails.FirstOrDefault().Id
-                                      && d.CartHeaderId == cartToBeCreated.CartHeader.Id);
+         .AsNoTracking()
+         .FirstOrDefaultAsync(d => d.Id == cartToBeCreated.CartDetails.FirstOrDefault().Id
+                                   && d.CartHeaderId == cartToBeCreated.CartHeader.Id);
 
         if (cartDetailsFromDb is null)
         {

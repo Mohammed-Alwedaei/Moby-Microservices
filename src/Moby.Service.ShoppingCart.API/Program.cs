@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using Moby.ServiceBus;
 using Moby.Services.ShoppingCart.API.DbContexts;
 using Moby.Services.ShoppingCart.API.Repository;
+using WatchDog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,31 +76,31 @@ builder.Services.AddHttpClient<ICouponManager, CouponManager>(c => c.BaseAddress
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = "https://localhost:7246/";
-        options.TokenValidationParameters = new TokenValidationParameters
+        options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
-            ValidateAudience = false
+            ValidAudience = builder.Configuration["Auth0:Audience"],
+            ValidIssuer = $"https://{builder.Configuration["Auth0:Domain"]}"
         };
     });
 
 builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy("ApiScope", options =>
-        {
-            options.RequireAuthenticatedUser();
-            options.RequireClaim("scope", "mango");
-        });
-    });
+{
+    options.AddPolicy("ReadAccess", policy =>
+        policy.RequireClaim("scope", "read:carts"));
+});
 
 builder.Services.AddCors(options =>
     {
         options.AddPolicy("Moby.Client", config =>
         {
-            config.WithOrigins("https://localhost:7018")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+            config.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
         });
     });
+
+builder.Services.AddWatchDogServices();
 
 var app = builder.Build();
 
@@ -110,11 +111,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseWatchDogExceptionLogger();
+
+app.UseCors("Moby.Client");
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseWatchDog(options =>
+{
+    options.WatchPageUsername = app.Configuration.GetValue<string>("WatchDog:Username");
+    options.WatchPagePassword = app.Configuration.GetValue<string>("WatchDog:Password");
+});
 
 app.MapControllers();
 

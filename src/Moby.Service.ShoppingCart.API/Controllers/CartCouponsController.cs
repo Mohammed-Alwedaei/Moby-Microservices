@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Moby.Services.ShoppingCart.API.Models.Dto;
 using Moby.Services.ShoppingCart.API.Repository;
 
 namespace Moby.Services.ShoppingCart.API.Controllers;
 [Route("api/[controller]")]
+[Authorize("ReadAccess")]
 [ApiController]
 public class CartCouponsController : ControllerBase
 {
@@ -23,7 +25,6 @@ public class CartCouponsController : ControllerBase
         try
         {
             var isApplied = await _cartManager.ApplyCoupon(userId, couponCode);
-
 
             Response.Results = true;
 

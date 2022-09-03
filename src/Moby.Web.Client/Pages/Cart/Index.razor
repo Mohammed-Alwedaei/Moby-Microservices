@@ -62,7 +62,7 @@
 
                                 <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
                                     <a class="btn btn-outline-danger">
-                                        <i class="oi oi-trash" @onclick="() => RemoveProductFromCart(detail.Id)"></i>
+                                       @* <i class="oi oi-trash" @onclick="() => RemoveProductFromCart(detail.Id)"></i>*@
                                     </a>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                             <div class="col-6">
                                 @if (string.IsNullOrEmpty(_cart.CartHeader.CouponCode))
                                 {
-                                    <EditForm Model="CartCouponCode" OnValidSubmit="ApplyCouponToUser">
+                                    <EditForm Model="CartCouponCode">
                                         <InputText class="form-control form-control-lg"
                                        @bind-Value="CartCouponCode.CouponCode"
                                        placeholder="Coupon Code" />
@@ -84,7 +84,7 @@
                                 }
                                 else
                                 {
-                                    <EditForm Model="CartCouponCode" OnValidSubmit="RemoveCouponFromUser">
+                                    <EditForm Model="CartCouponCode">
                                         <InputText class="form-control form-control-lg"
                                        @bind-Value="@_cart.CartHeader.CouponCode" disabled />
 
@@ -96,7 +96,7 @@
                             </div>
                             <div class="col-6 text-end">
                                 <span class="text-danger" style="font-size: 21px;">
-                                    Order Total : @_cart.CartHeader.Total.ToString("c") <br />
+                                    
                                 </span>
                                 @if (_hasDiscountCoupon)
                                 {

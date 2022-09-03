@@ -38,82 +38,82 @@ public partial class Checkout
 
     protected override async Task OnInitializedAsync()
     {
-        await GetCartDtoByUserIdAsync();
+      //  await GetCartDtoByUserIdAsync();
     }
 
-    private async Task GetCartDtoByUserIdAsync()
-    {
-        _isLoading = true;
+    //private async Task GetCartDtoByUserIdAsync()
+    //{
+    //    _isLoading = true;
 
-        var cart = new CartDto();
+    //    var cart = new CartDto();
 
-        var userId = AuthenticationState.GetAuthenticationStateAsync()
-            .Result.User.Claims.
-            FirstOrDefault(c => c.Type == "sub")?.Value;
+    //    var userId = AuthenticationState.GetAuthenticationStateAsync()
+    //        .Result.User.Claims.
+    //        FirstOrDefault(c => c.Type == "sub")?.Value;
 
-        var shoppingCartResponse = await ShoppingCartService.GetCartByUserIdAsync<ResponseDto>(userId);
+    //    var shoppingCartResponse = await ShoppingCartService.GetCartByUserIdAsync<ResponseDto>(userId);
 
-        if (shoppingCartResponse.Results is not null || shoppingCartResponse.IsSuccess)
-            cart = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(shoppingCartResponse.Results));
+    //    if (shoppingCartResponse.Results is not null || shoppingCartResponse.IsSuccess)
+    //        cart = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(shoppingCartResponse.Results));
 
-        if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
-        {
-            _couponDto = await GetCoupon(cart.CartHeader.CouponCode);
-            var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
+    //    if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+    //    {
+    //        _couponDto = await GetCoupon(cart.CartHeader.CouponCode);
+    //        var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
 
-            cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
-            cart.CartHeader.TotalAfterDiscount = _couponDto.DiscountAmount;
-            _hasDiscountCoupon = true;
-        }
-        else
-        {
-            cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
-            cart.CartHeader.TotalAfterDiscount = 0;
-            _hasDiscountCoupon = false;
-        }
+    //        cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
+    //        cart.CartHeader.TotalAfterDiscount = _couponDto.DiscountAmount;
+    //        _hasDiscountCoupon = true;
+    //    }
+    //    else
+    //    {
+    //        cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
+    //        cart.CartHeader.TotalAfterDiscount = 0;
+    //        _hasDiscountCoupon = false;
+    //    }
 
-        _isLoading = false;
+    //    _isLoading = false;
 
-        _cart = cart;
-    }
+    //    _cart = cart;
+    //}
 
-    private decimal CalculateTotalCartPrice(IEnumerable<CartDetailsDto> cartDetailsDtos)
-    {
-        var cartTotal = 0m;
+    //private decimal CalculateTotalCartPrice(IEnumerable<CartDetailsDto> cartDetailsDtos)
+    //{
+    //    var cartTotal = 0m;
 
-        foreach (var detail in cartDetailsDtos)
-        {
-            cartTotal += (detail.Product.Price * detail.Count);
-        }
+    //    foreach (var detail in cartDetailsDtos)
+    //    {
+    //        cartTotal += (detail.Product.Price * detail.Count);
+    //    }
 
-        return cartTotal;
-    }
+    //    return cartTotal;
+    //}
 
-    private async Task<CouponDto> GetCoupon(string couponCode)
-    {
-        var response = await CouponService.GetCouponByCodeNameAsync<ResponseDto>(couponCode);
+    //private async Task<CouponDto> GetCoupon(string couponCode)
+    //{
+    //    var response = await CouponService.GetCouponByCodeNameAsync<ResponseDto>(couponCode);
 
-        var coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Results));
+    //    var coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Results));
 
-        return coupon;
-    }
+    //    return coupon;
+    //}
 
-    private async Task BeginCheckoutFlow()
-    {
-        var cart = _cart;
-        _hasErrors = false;
+    //private async Task BeginCheckoutFlow()
+    //{
+    //    var cart = _cart;
+    //    _hasErrors = false;
 
-        var response = await ShoppingCartService.CheckoutAsync<ResponseDto>(_cart.CartHeader);
+    //    var response = await ShoppingCartService.CheckoutAsync<ResponseDto>(_cart.CartHeader);
 
-        if (!string.IsNullOrEmpty(response.Message) && !response.IsSuccess)
-        {
-            _hasErrors = true;
+    //    if (!string.IsNullOrEmpty(response.Message) && !response.IsSuccess)
+    //    {
+    //        _hasErrors = true;
 
-            _errorMessage = response.Message;
+    //        _errorMessage = response.Message;
 
-            return;
-        }
+    //        return;
+    //    }
 
-        NavigationManager.NavigateTo("/cart/orders/confirmed");
-    }
+    //    NavigationManager.NavigateTo("/cart/orders/confirmed");
+    //}
 }

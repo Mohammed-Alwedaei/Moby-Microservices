@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.PortableExecutable;
 
 namespace Moby.Services.ShoppingCart.API.Models;
 
 public class CartDetailsModel
 {
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
     public int CartHeaderId { get; set; }

@@ -2,6 +2,9 @@
 
 @attribute [Authorize]
 
+@inject IProductService ProductService
+@inject ITokenService TokenService
+
 @inject NavigationManager NavigationManager
 
 <PageTitle>Our Products</PageTitle>
@@ -52,8 +55,11 @@
 
     private async Task BeginProductCreate()
     {
-        //await ProductService.CreateProductAsync<ProductDto>(Product);
 
-        NavigationManager.NavigateTo("/Products?alert=success&title=Product Created");
+        var token = await TokenService.GetTokenAsync("Products");
+        var response = await ProductService.CreateProductAsync(Product, token.AccessToken);
+
+        if(response is true)
+            NavigationManager.NavigateTo("/Products?alert=success&title=Product Created");
     }
 }

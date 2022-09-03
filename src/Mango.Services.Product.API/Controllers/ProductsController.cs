@@ -7,7 +7,7 @@ using Moby.Services.Product.API.Repository.IRepository;
 namespace Moby.Services.Product.API.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Policy = "ReadAccess")]
 [ApiController]
 public class ProductsController : ControllerBase
 {

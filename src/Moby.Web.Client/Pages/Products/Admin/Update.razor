@@ -1,5 +1,7 @@
 ﻿@page "/Products/Update"
 
+@inject IProductService ProductService
+@inject ITokenService TokenService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Our Products</PageTitle>
@@ -56,15 +58,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //var response = await ProductService.GetProductByIdAsync<ResponseDto>(ProductId);
-
-        //Product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Results));
+        var token = await TokenService.GetTokenAsync("Products");
+        Product = await ProductService.GetProductByIdAsync(ProductId, token.AccessToken);
     }
 
     private async Task BeginProductUpdate()
     {
-        //await ProductService.UpdateProductAsync<ProductDto>(Product);
+        var token = await TokenService.GetTokenAsync("Products");
+        var response = await ProductService.UpdateProductAsync(Product, token.AccessToken);
 
-        //NavigationManager.NavigateTo("/Products");
+        if (response is true)
+            NavigationManager.NavigateTo("/Products");
     }
 }

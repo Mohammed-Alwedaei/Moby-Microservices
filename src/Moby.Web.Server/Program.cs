@@ -1,48 +1,29 @@
-using Duende.Bff;
-using Duende.Bff.Yarp;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Moby.Web.Server.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddBff().AddRemoteApis();
+builder.Services.AddHttpClient(nameof(GetTokenController));
 
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, c =>
     {
-        options.DefaultScheme = "cookie";
-        options.DefaultChallengeScheme = "oidc";
-        options.DefaultSignOutScheme = "oidc";
-    })
-    .AddCookie("cookie", options =>
-    {
-        options.Cookie.Name = "__Host-blazor";
-        options.Cookie.SameSite = SameSiteMode.Strict;
-    })
-    .AddOpenIdConnect("oidc", options =>
-    {
-        options.Authority = "https://localhost:7246";
-
-        options.ClientId = "Mango";
-        options.ClientSecret = "secret";
-        options.ResponseType = "code";
-        options.ResponseMode = "query";
-
-        options.Scope.Clear();
-        options.Scope.Add("openid");
-        options.Scope.Add("profile");
-        options.Scope.Add("mango");
-
-        options.MapInboundClaims = false;
-        options.GetClaimsFromUserInfoEndpoint = true;
-        options.SaveTokens = true;
+        c.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+        c.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidAudience = builder.Configuration["Auth0:Audience"],
+            ValidIssuer = $"https://{builder.Configuration["Auth0:Domain"]}"
+        };
     });
 
-builder.Services.AddUserAccessTokenHttpClient("apiClient", configureClient: client =>
+builder.Services.AddAuthorization(options =>
 {
-    client.BaseAddress = new Uri("https://localhost:7085");
+    options.AddPolicy("ReadAccess", policy =>
+        policy.RequireClaim("permissions", "read:access_token"));
 });
 
 var app = builder.Build();
@@ -67,40 +48,10 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseAuthentication();
-app.UseBff();
 app.UseAuthorization();
-
-app.MapBffManagementEndpoints();
 
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-
-app.MapControllers()
-    .RequireAuthorization()
-    .AsBffApiEndpoint();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapRemoteBffApiEndpoint(
-            "/api/products", "https://localhost:7190/api/Products")
-        .RequireAccessToken(TokenType.User);
-
-    endpoints.MapRemoteBffApiEndpoint(
-            "/api/carts", "https://localhost:7008/api/carts")
-        .RequireAccessToken(TokenType.User);
-
-    endpoints.MapRemoteBffApiEndpoint(
-            "/api/cartcoupons", "https://localhost:7008/api/cartcoupons")
-        .RequireAccessToken(TokenType.User);
-
-    endpoints.MapRemoteBffApiEndpoint(
-            "/api/checkouts", "https://localhost:7008/api/checkouts")
-        .RequireAccessToken(TokenType.User);
-
-    endpoints.MapRemoteBffApiEndpoint(
-            "/api/coupons", "https://localhost:7081/api/coupons")
-        .RequireAccessToken(TokenType.User);
-});
 
 app.Run();

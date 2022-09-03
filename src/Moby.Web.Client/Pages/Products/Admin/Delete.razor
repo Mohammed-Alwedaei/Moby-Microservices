@@ -1,5 +1,7 @@
 ﻿@page "/Products/Delete"
 
+@inject IProductService ProductService
+@inject ITokenService TokenService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Our Products</PageTitle>
@@ -53,18 +55,18 @@
 
     private ProductDto Product = new();
 
-
     protected override async Task OnInitializedAsync()
     {
-        //var response = await ProductService.GetProductByIdAsync<ResponseDto>(ProductId);
-
-        //Product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Results));
+        var token = await TokenService.GetTokenAsync("Products");
+        Product = await ProductService.GetProductByIdAsync(ProductId, token.AccessToken);
     }
 
     private async Task BeginProductDelete()
     {
-        //await ProductService.DeleteProductAsync<ProductDto>(Product.Id);
+        var token = await TokenService.GetTokenAsync("Products");
+        var response = await ProductService.DeleteProductAsync(ProductId, token.AccessToken);
 
-        //NavigationManager.NavigateTo("/Products");
+        if (response is true)
+            NavigationManager.NavigateTo("/Products");
     }
 }

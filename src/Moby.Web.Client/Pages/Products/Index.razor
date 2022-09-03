@@ -1,6 +1,8 @@
 ﻿@page "/Products"
 
 @inject IProductService ProductService
+@inject ITokenService TokenService
+@inject IHttpClientFactory HttpClient
 @inject IJSRuntime JsRuntime
 
 <PageTitle>Our Products</PageTitle>
@@ -49,10 +51,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await ProductService.GetProductsAsync<ResponseDto>();
+        var token = await TokenService.GetTokenAsync("Products");
 
-        if (response.Results is not null || response.IsSuccess is not false)
-            Products = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Results));
+        Products = await ProductService.GetProductsAsync(token.AccessToken);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

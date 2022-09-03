@@ -3,7 +3,6 @@ using Moby.Services.Product.API.DbContexts;
 using Moby.Services.Product.API.Mapper;
 using Moby.Services.Product.API.Repository;
 using Moby.Services.Product.API.Repository.IRepository;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,20 +74,19 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = "https://localhost:7246/";
-        options.TokenValidationParameters = new TokenValidationParameters
+        options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
-            ValidateAudience = false
+            ValidAudience = builder.Configuration["Auth0:Audience"],
+            ValidIssuer = $"https://{builder.Configuration["Auth0:Domain"]}"
         };
     });
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("ApiScope", options =>
-    {
-        options.RequireAuthenticatedUser();
-        options.RequireClaim("scope", "mango");
-    });
+    options.AddPolicy("ReadAccess", policy =>
+        policy.RequireClaim("scope", "read:products"));
+
 });
 
 builder.Services.AddCors(options =>

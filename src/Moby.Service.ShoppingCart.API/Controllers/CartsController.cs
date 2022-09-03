@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moby.Services.ShoppingCart.API.Models.Dto;
 using Moby.Services.ShoppingCart.API.Repository;
+using Newtonsoft.Json;
 
 namespace Moby.Services.ShoppingCart.API.Controllers;
 
 [Route("api/[controller]")]
+[Authorize("ReadAccess")]
 [ApiController]
 public class CartsController : ControllerBase
 {
@@ -43,29 +47,41 @@ public class CartsController : ControllerBase
         }
     }
 
+
     [HttpPost]
+    
     public async Task<IActionResult> CreateCart([FromBody] CartDto cartToCreate)
     {
-        try
-        {
-            var cart = await _cartManager.CreateCartAsync(cartToCreate);
-            _logger.LogInformation("Entered Cart create api endpoint the user id is:");
-            Response.Results = cart;
+        _logger.LogInformation("Entered Cart to create");
 
-            return Ok(Response);
-        }
-        catch (Exception exception)
+        if (ModelState.IsValid)
         {
-            Response.IsSuccess = false;
-            Response.Errors = new()
+            try
             {
-                exception.StackTrace,
-                exception.Message,
-                exception.InnerException.Message,
-            };
+                var cart = await _cartManager.CreateCartAsync(cartToCreate);
+                _logger.LogInformation("Entered Cart create api endpoint the user id is:");
+                Response.Results = cart;
 
-            return BadRequest(Response);
+                return Ok(Response);
+            }
+            catch (Exception exception)
+            {
+                Response.IsSuccess = false;
+                Response.Errors = new()
+                {
+                    exception.StackTrace,
+                    exception.Message,
+                    exception.InnerException.Message,
+                };
+
+                _logger.LogInformation(exception.Message);
+
+                return BadRequest(Response);
+            }
         }
+        
+        return BadRequest("Please enter the correct data");
+        
     }
 
     [HttpPut]

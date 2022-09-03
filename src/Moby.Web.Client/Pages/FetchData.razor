@@ -1,6 +1,8 @@
 ﻿@page "/fetchdata"
 
-@inject HttpClient Http
+@attribute [Authorize]
+
+@inject HttpClient HttpClient
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -9,17 +11,38 @@
 
     <p>This component demonstrates fetching data from the server.</p>
 
-    @if (!string.IsNullOrEmpty(token))
+    @if (!string.IsNullOrEmpty(_token))
     {
-        <p class="w-25 text-wrap">@token</p>
+        <p class="w-25 text-wrap">@_token</p>
+    }
+</div>
+
+<div class="overflow-hidden w-100">
+    @if (_hasError)
+    {
+        <h2>@_error</h2>
     }
 </div>
 
 @code {
-    private string token;
+    private string _token;
+
+    private string _error = "";
+    private bool _hasError = false;
 
     protected override async Task OnInitializedAsync()
     {
-        token = await Http.GetStringAsync("GetToken");
+        try
+        {
+            var tokenFromDb = await HttpClient.GetFromJsonAsync<Token>("/api/GetToken/Carts");
+
+            if (tokenFromDb.AccessToken is not null)
+                _token = tokenFromDb.AccessToken;
+        }
+        catch (Exception exception)
+        {
+            _hasError = true;
+            _error = exception.Message;
+        }
     }
 }

@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Moby.ServiceBus;
 using Moby.Services.ShoppingCart.API.Messages;
 using Moby.Services.ShoppingCart.API.Models.Dto;
@@ -9,6 +8,7 @@ using Moby.Services.ShoppingCart.API.Repository;
 namespace Moby.Services.ShoppingCart.API.Controllers;
 
 [Route("api/[controller]")]
+[Authorize("ReadAccess")]
 [ApiController]
 public class CheckoutsController : ControllerBase
 {
