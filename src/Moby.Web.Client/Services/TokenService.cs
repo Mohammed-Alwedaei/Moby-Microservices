@@ -8,12 +8,14 @@ public class TokenService : ITokenService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<TokenService> _logger;
+    private readonly ITokenService _tokenService;
 
     public TokenService(HttpClient httpClient, ILogger<TokenService> logger)
     {
         _httpClient = httpClient;
         _logger = logger;
     }
+
     public async Task<Token> GetTokenAsync(string targetApi)
     {
         try

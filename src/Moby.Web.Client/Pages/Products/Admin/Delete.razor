@@ -58,13 +58,13 @@
     protected override async Task OnInitializedAsync()
     {
         var token = await TokenService.GetTokenAsync("Products");
-        Product = await ProductService.GetProductByIdAsync(ProductId, token.AccessToken);
+        Product = await ProductService.GetProductByIdAsync(ProductId);
     }
 
     private async Task BeginProductDelete()
     {
         var token = await TokenService.GetTokenAsync("Products");
-        var response = await ProductService.DeleteProductAsync(ProductId, token.AccessToken);
+        var response = await ProductService.DeleteProductAsync(ProductId);
 
         if (response is true)
             NavigationManager.NavigateTo("/Products");

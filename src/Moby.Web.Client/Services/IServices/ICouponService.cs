@@ -1,6 +1,8 @@
-﻿namespace Moby.Web.Client.Services.IServices;
+﻿using Moby.Web.Shared.Models.Cart;
+
+namespace Moby.Web.Client.Services.IServices;
 
 public interface ICouponService
 {
-    Task<T> GetCouponByCodeNameAsync<T>(string couponCode);
+    Task<CouponDto> GetCouponByCodeNameAsync(string couponCode);
 }

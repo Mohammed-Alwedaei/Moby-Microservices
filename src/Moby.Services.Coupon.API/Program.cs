@@ -96,7 +96,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("Moby.Client", config =>
     {
-        config.WithOrigins("https://localhost:7018")
+        config.AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -110,6 +110,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("Moby.Client");
 
 app.UseHttpsRedirection();
 

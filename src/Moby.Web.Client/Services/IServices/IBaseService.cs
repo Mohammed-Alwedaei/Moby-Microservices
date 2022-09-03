@@ -1,14 +1,10 @@
-﻿namespace Moby.Web.Client.Services.IServices;
+﻿using Moby.Web.Shared.Models;
+
+namespace Moby.Web.Client.Services.IServices;
 
 public interface IBaseService : IDisposable
 {
-    Task<T> GetByIdAsync<T>(int id);
+    Task<HttpClient> HttpClient(string baseUrl, string service);
 
-    Task<T> GetAllAsync<T>();
-
-    Task<T> CreateByIdAsync<T>(T entityToCreate);
-
-    Task<T> UpdateByIdAsync<T>(T entityToUpdate);
-
-    Task DeleteAsync<T>(int id);
+    Task<Token> GetAccessTokenAsync(string service);
 }

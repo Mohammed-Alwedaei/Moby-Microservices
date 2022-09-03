@@ -5,17 +5,17 @@ namespace Moby.Web.Client.Services.IServices;
 
 public interface IShoppingCartService
 {
-    Task<CartDto> GetCartByUserIdAsync(string userId, string accessToken);
+    Task<CartDto> GetCartByUserIdAsync(string userId);
 
-    Task<bool> CreateCartAsync(PostCartDto cart, string accessToken);
+    Task<bool> CreateCartAsync(PostCartDto cart);
 
-    //Task<T> UpdateCartAsync<T>(CartDto cart);
+    Task<bool> UpdateCartAsync(CartDto cart);
 
-    //Task<T> RemoveProductFromCartAsync<T>(int cartDetailsId);
+    Task<bool> RemoveProductFromCartAsync(int cartDetailsId);
 
-    //Task<T> ApplyCouponAsync<T>(string userId, string couponCode);
+    Task<bool> ApplyCouponAsync(string userId, string couponCode);
 
-    //Task<T> RemoveCouponAsync<T>(string userId);
+    Task<bool> RemoveCouponAsync(string userId);
 
-    //Task<T> CheckoutAsync<T>(CartHeaderDto cartHeader);
+    Task<bool> CheckoutAsync(CartHeaderDto cartHeader);
 }

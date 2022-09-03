@@ -57,7 +57,7 @@
     {
 
         var token = await TokenService.GetTokenAsync("Products");
-        var response = await ProductService.CreateProductAsync(Product, token.AccessToken);
+        var response = await ProductService.CreateProductAsync(Product);
 
         if(response is true)
             NavigationManager.NavigateTo("/Products?alert=success&title=Product Created");

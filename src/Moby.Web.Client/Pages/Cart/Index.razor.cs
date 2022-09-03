@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using Moby.Web.Client.Services;
 using Moby.Web.Client.Services.IServices;
-using Moby.Web.Shared.Models;
 using Moby.Web.Shared.Models.Cart;
 using Newtonsoft.Json;
 
@@ -36,132 +34,120 @@ public partial class Index
 
     private bool _isLoading;
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    await GetCartDtoByUserIdAsync();
-    //}
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCartDtoByUserIdAsync();
+    }
 
-    //private async Task RemoveProductFromCart(int cartDetailsId)
-    //{
-    //    var userId = AuthenticationState.GetAuthenticationStateAsync()
-    //        .Result.User.Claims.
-    //        FirstOrDefault(c => c.Type == "sub")?.Value;
+    private async Task RemoveProductFromCart(int cartDetailsId)
+    {
+        var userId = AuthenticationState.GetAuthenticationStateAsync()
+            .Result.User.Claims.
+            FirstOrDefault(c => c.Type == "sub")?.Value;
 
-    //    var shoppingCartResponse = await ShoppingCartService.RemoveProductFromCartAsync<ResponseDto>(cartDetailsId);
+        var shoppingCartResponse = await ShoppingCartService.RemoveProductFromCartAsync(cartDetailsId);
 
-    //    if (shoppingCartResponse.Results is not null || shoppingCartResponse.IsSuccess)
-    //    {
-    //        await JsRuntime.InvokeVoidAsync("alert", "Product Deleted", "success");
-    //        await GetCartDtoByUserIdAsync();
-    //    }
+        if (shoppingCartResponse)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Product Deleted", "success");
+            await GetCartDtoByUserIdAsync();
+        }
 
-    //    await InvokeAsync(StateHasChanged);
-    //}
+        await InvokeAsync(StateHasChanged);
+    }
 
-    //private async Task GetCartDtoByUserIdAsync()
-    //{
-    //    _isLoading = true;
+    private async Task GetCartDtoByUserIdAsync()
+    {
+        _isLoading = true;
 
-    //    var cart = new CartDto();
+        var cart = new CartDto();
 
-    //    var userId = AuthenticationState
-    //        .GetAuthenticationStateAsync()
-    //        .Result.User.Claims
-    //        .FirstOrDefault(c => c.Type == "sub")?.Value;
+        var userId = AuthenticationState
+            .GetAuthenticationStateAsync()
+            .Result.User.Claims
+            .FirstOrDefault(c => c.Type == "sub")?.Value;
 
-    //    var shoppingCartResponse = await ShoppingCartService
-    //        .GetCartByUserIdAsync<ResponseDto>(userId);
+        var shoppingCartResponse = await ShoppingCartService.GetCartByUserIdAsync(userId);
 
-    //    if (shoppingCartResponse.IsSuccess)
-    //    {
-    //        cart = JsonConvert
-    //            .DeserializeObject<CartDto>(Convert.ToString(shoppingCartResponse.Results));
+        if (shoppingCartResponse is not null)
+        {
+            cart = shoppingCartResponse;
 
-    //        if (cart.CartHeader is null && !cart.CartDetails.Any())
-    //        {
-    //            cart = new();
-    //        }
-    //        else
-    //        {
-    //            if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
-    //            {
-    //                _couponDto = await GetCoupon(cart.CartHeader.CouponCode);
-    //                var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
-    //                cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
-    //                _hasDiscountCoupon = true;
-    //            }
-    //            else
-    //            {
-    //                cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
-    //                _hasDiscountCoupon = false;
-    //            }
-    //        }
-    //    }
+            if (cart.CartHeader is null && !cart.CartDetails.Any())
+            {
+                cart = new();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+                {
+                    _couponDto = await CouponService.GetCouponByCodeNameAsync(cart.CartHeader.CouponCode);
+                    var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
+                    cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
+                    _hasDiscountCoupon = true;
+                }
+                else
+                {
+                    cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
+                    _hasDiscountCoupon = false;
+                }
+            }
+        }
 
-    //    _isLoading = false;
+        _isLoading = false;
 
-    //    _cart = cart;
-    //}
+        _cart = cart;
+    }
 
-    //private decimal CalculateTotalCartPrice(IEnumerable<CartDetailsDto> cartDetailsDtos)
-    //{
-    //    var cartTotal = 0m;
+    private decimal CalculateTotalCartPrice(IEnumerable<CartDetailsDto> cartDetailsDtos)
+    {
+        var cartTotal = 0m;
 
-    //    foreach (var detail in cartDetailsDtos)
-    //    {
-    //        cartTotal += (detail.Product.Price * detail.Count);
-    //    }
+        foreach (var detail in cartDetailsDtos)
+        {
+            cartTotal += (detail.Product.Price * detail.Count);
+        }
 
-    //    return cartTotal;
-    //}
+        return cartTotal;
+    }
 
     class CartCouponModel
     {
         public string CouponCode { get; set; }
     }
 
-    //private async Task ApplyCouponToUser()
-    //{
-    //    var userId = AuthenticationState.GetAuthenticationStateAsync()
-    //        .Result.User.Claims.
-    //        FirstOrDefault(c => c.Type == "sub")?.Value;
+    private async Task ApplyCouponToUser()
+    {
+        var userId = AuthenticationState.GetAuthenticationStateAsync()
+            .Result.User.Claims.
+            FirstOrDefault(c => c.Type == "sub")?.Value;
 
-    //    var couponCode = CartCouponCode.CouponCode;
+        var couponCode = CartCouponCode.CouponCode;
 
-    //    if (!string.IsNullOrEmpty(couponCode))
-    //    {
-    //        var response = await ShoppingCartService.ApplyCouponAsync<ResponseDto>(userId, couponCode);
+        if (!string.IsNullOrEmpty(couponCode))
+        {
+            var response = await ShoppingCartService.ApplyCouponAsync(userId, couponCode);
 
+            if (response)
+            {
+                _cart = new();
+                await GetCartDtoByUserIdAsync();
+            }
+        }
+    }
 
-    //        if (response is not null || response.IsSuccess)
-    //        {
-    //            _cart = new();
-    //            await GetCartDtoByUserIdAsync();
-    //        }
-    //    }
-    //}
+    private async Task RemoveCouponFromUser()
+    {
+        var userId = AuthenticationState.GetAuthenticationStateAsync()
+            .Result.User.Claims.
+            FirstOrDefault(c => c.Type == "sub")?.Value;
 
-    //private async Task RemoveCouponFromUser()
-    //{
-    //    var userId = AuthenticationState.GetAuthenticationStateAsync()
-    //        .Result.User.Claims.
-    //        FirstOrDefault(c => c.Type == "sub")?.Value;
+        var response = await ShoppingCartService.RemoveCouponAsync(userId);
 
-    //    var response = await ShoppingCartService.RemoveCouponAsync<ResponseDto>(userId);
-
-    //    if (response is not null || response.IsSuccess)
-    //    {
-    //        _cart = new();
-    //        await GetCartDtoByUserIdAsync();
-    //    }
-    //}
-
-    //private async Task<CouponDto> GetCoupon(string couponCode)
-    //{
-    //    var response = await CouponService.GetCouponByCodeNameAsync<ResponseDto>(couponCode);
-
-    //    var coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Results));
-
-    //    return coupon;
-    //}
+        if (response)
+        {
+            _cart = new();
+            await GetCartDtoByUserIdAsync();
+        }
+    }
 }

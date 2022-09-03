@@ -43,7 +43,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _product = await ProductService.GetProductByIdAsync(ProductId, "");
+        _product = await ProductService.GetProductByIdAsync(ProductId);
     }
 
     private async Task BeginAddToCartFlow()
@@ -57,7 +57,7 @@
             }
         };
 
-        var productToAddResponse = await ProductService.GetProductByIdAsync(ProductId, "");
+        var productToAddResponse = await ProductService.GetProductByIdAsync(ProductId);
 
         var cartDetails = new PostCartDetailsDto
         {
@@ -82,7 +82,7 @@
 
         var shoppingCartAccessToken = await TokenService.GetTokenAsync(ApiRoutes.Carts);
 
-        var shoppingCartResponse = await ShoppingCartService.CreateCartAsync(cart, shoppingCartAccessToken.AccessToken);
+        var shoppingCartResponse = await ShoppingCartService.CreateCartAsync(cart);
 
         if (shoppingCartResponse)
         {

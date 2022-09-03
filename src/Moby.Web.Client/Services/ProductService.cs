@@ -9,22 +9,29 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Moby.Web.Client.Services;
 
-public class ProductService : IProductService
+public class ProductService : BaseService, IProductService
 {
     private readonly IHttpClientFactory _httpClient;
     private readonly IConfiguration _configuration;
+    private readonly ITokenService _tokenService;
 
-    public ProductService(IHttpClientFactory httpClient, IConfiguration configuration)
+    private readonly string _baseUrl;
+
+    public ProductService(IHttpClientFactory httpClient, IConfiguration configuration, ITokenService tokenService) : base(httpClient, tokenService)
     {
         _httpClient = httpClient;
         _configuration = configuration;
-        
+        _tokenService = tokenService;
+
+        _baseUrl = _configuration.GetValue<string>("ServicesUrls:Products.API");
+
     }
 
-    public async Task<ProductDto> GetProductByIdAsync(int id, string accessToken)
+    public async Task<ProductDto> GetProductByIdAsync(int id)
     {
-        var response = await HttpClient(accessToken)
-            .GetFromJsonAsync<ResponseDto>($"/api/products/{id}");
+        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+
+        var response = await client.GetFromJsonAsync<ResponseDto>($"/api/products/{id}");
 
         if (response is null)
         {
@@ -34,9 +41,11 @@ public class ProductService : IProductService
         return JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Results));
     }
 
-    public async Task<List<ProductDto>> GetProductsAsync(string accessToken)
+    public async Task<List<ProductDto>> GetProductsAsync()
     {
-        var response = await HttpClient(accessToken)
+        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+
+        var response = await client
             .GetFromJsonAsync<ResponseDto>("/api/products");
 
         if (response is null)
@@ -47,9 +56,11 @@ public class ProductService : IProductService
         return JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Results));
     }
 
-    public async Task<bool> CreateProductAsync(ProductDto product, string accessToken)
+    public async Task<bool> CreateProductAsync(ProductDto product)
     {
-        var response = await HttpClient(accessToken)
+        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+
+        var response = await client
             .PostAsJsonAsync("/api/products", product);
 
         if (response is null && response.IsSuccessStatusCode is false)
@@ -60,9 +71,11 @@ public class ProductService : IProductService
         return true;
     }
 
-    public async Task<bool> UpdateProductAsync(ProductDto product, string accessToken)
+    public async Task<bool> UpdateProductAsync(ProductDto product)
     {
-        var response = await HttpClient(accessToken)
+        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+
+        var response = await client
             .PutAsJsonAsync("/api/products", product);
 
         if (response is null && response.IsSuccessStatusCode is false)
@@ -73,9 +86,11 @@ public class ProductService : IProductService
         return true;
     }
 
-    public async Task<bool> DeleteProductAsync(int id, string accessToken)
+    public async Task<bool> DeleteProductAsync(int id)
     {
-        var response = await HttpClient(accessToken)
+        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+
+        var response = await client
             .DeleteAsync($"/api/products/{id}");
 
         if (response is null && response.IsSuccessStatusCode is false)
@@ -84,16 +99,5 @@ public class ProductService : IProductService
         }
 
         return true;
-    }
-
-    private HttpClient HttpClient(string accessToken)
-    {
-        var client = _httpClient.CreateClient("ProductClient");
-
-        client.BaseAddress = new Uri(_configuration["ServicesUrls:Products.API"]);
-
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-        return client;
     }
 }

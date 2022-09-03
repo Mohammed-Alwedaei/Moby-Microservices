@@ -2,7 +2,6 @@
 
 @inject IProductService ProductService
 @inject ITokenService TokenService
-@inject IHttpClientFactory HttpClient
 @inject IJSRuntime JsRuntime
 
 <PageTitle>Our Products</PageTitle>
@@ -53,7 +52,7 @@
     {
         var token = await TokenService.GetTokenAsync("Products");
 
-        Products = await ProductService.GetProductsAsync(token.AccessToken);
+        Products = await ProductService.GetProductsAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
