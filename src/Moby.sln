@@ -36,7 +36,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Payments", "Moby.Payme
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Services.Payments.API", "Moby.Services.Payments.API\Moby.Services.Payments.API.csproj", "{DED74752-FFDB-48C1-B03A-4C29926AD801}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moby.Services.Identity.API", "Moby.Services.Identity.API\Moby.Services.Identity.API.csproj", "{E6F5144D-C835-4C8A-A87B-445BE792796F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moby.Services.Identity.API", "Moby.Services.Identity.API\Moby.Services.Identity.API.csproj", "{E6F5144D-C835-4C8A-A87B-445BE792796F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moby.Services.Email.API", "Moby.Services.Email\Moby.Services.Email.API.csproj", "{E37F0BEC-1419-4ADB-AD5F-1F3FABB3C904}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,10 @@ Global
 		{E6F5144D-C835-4C8A-A87B-445BE792796F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6F5144D-C835-4C8A-A87B-445BE792796F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6F5144D-C835-4C8A-A87B-445BE792796F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E37F0BEC-1419-4ADB-AD5F-1F3FABB3C904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E37F0BEC-1419-4ADB-AD5F-1F3FABB3C904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E37F0BEC-1419-4ADB-AD5F-1F3FABB3C904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E37F0BEC-1419-4ADB-AD5F-1F3FABB3C904}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{7F5E5F73-55FF-4F5E-95F8-5660B7F79EF8} = {8B4426A1-CB40-42F2-B5E5-C863D4723421}
 		{DED74752-FFDB-48C1-B03A-4C29926AD801} = {8DDBC95C-CC4A-4181-A2D5-B9A47AB32786}
 		{E6F5144D-C835-4C8A-A87B-445BE792796F} = {8DDBC95C-CC4A-4181-A2D5-B9A47AB32786}
+		{E37F0BEC-1419-4ADB-AD5F-1F3FABB3C904} = {8DDBC95C-CC4A-4181-A2D5-B9A47AB32786}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {81957DBB-88CD-49C8-80A1-BE42B5FDE965}

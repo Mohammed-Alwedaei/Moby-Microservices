@@ -1,6 +1,6 @@
 ﻿using Moby.ServiceBus;
 
-namespace Moby.Services.Payments.API.Messages;
+namespace Moby.Services.Email.API.Messages;
 
 public class UpdatePaymentProcessResultMessage : BaseMessageModel
 {

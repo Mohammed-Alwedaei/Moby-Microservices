@@ -70,7 +70,8 @@ public class ServiceBusConsumer : IServiceBusConsumer
         var updatePaymentProcessResultMessage = new UpdatePaymentProcessResultMessage()
         {
             Id = paymentProcessRequest.OrderId,
-            Status = paymentProcessStatus
+            Status = paymentProcessStatus,
+            Email = paymentProcessRequest.Email,
         };
 
         try

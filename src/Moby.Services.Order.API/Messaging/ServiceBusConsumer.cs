@@ -123,6 +123,7 @@ public class ServiceBusConsumer : IServiceBusConsumer
             Cvv = orderHeader.Cvv,
             ExpiryDate = orderHeader.ExpiryDate,
             OrderTotal = orderHeader.Total,
+            Email = orderHeader.Email
         };
 
         try
