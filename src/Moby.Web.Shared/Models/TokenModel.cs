@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Moby.Web.Shared.Models;
-public class Token
+public class TokenModel
 {
     [JsonProperty("access_token")]
     public string AccessToken { get; set; }

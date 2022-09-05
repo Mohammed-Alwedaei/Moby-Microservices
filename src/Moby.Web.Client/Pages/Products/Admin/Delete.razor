@@ -1,10 +1,13 @@
-﻿@page "/Products/Delete"
+﻿@*
+    Page: Create a new product
+    Authorization Level: Admin
+    Purpose: Display a form with the corresponding product to be deleted
+    Data to be collected: ----
+*@
 
-@inject IProductService ProductService
-@inject ITokenService TokenService
-@inject NavigationManager NavigationManager
+@page "/Products/Delete"
 
-<PageTitle>Our Products</PageTitle>
+<PageTitle>Moby || Delete Product</PageTitle>
 
 <h1>Products</h1>
 
@@ -46,27 +49,3 @@
         <button class="btn btn-danger">Delete</button>
     </div>
 </EditForm>
-
-
-@code {
-    [Parameter]
-    [SupplyParameterFromQuery(Name = "productId")]
-    public int ProductId { get; set; }
-
-    private ProductDto Product = new();
-
-    protected override async Task OnInitializedAsync()
-    {
-        var token = await TokenService.GetTokenAsync("Products");
-        Product = await ProductService.GetProductByIdAsync(ProductId);
-    }
-
-    private async Task BeginProductDelete()
-    {
-        var token = await TokenService.GetTokenAsync("Products");
-        var response = await ProductService.DeleteProductAsync(ProductId);
-
-        if (response is true)
-            NavigationManager.NavigateTo("/Products");
-    }
-}

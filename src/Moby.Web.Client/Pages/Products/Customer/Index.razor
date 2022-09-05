@@ -1,0 +1,40 @@
+﻿@*
+    Page: Get a list products
+    Authorization Level: Customer
+    Purpose: Display a list of products
+    Data to be collected: ----
+*@
+
+@page "/"
+
+<PageTitle>Moby || Products</PageTitle>
+
+<section class="row align-items-center">
+    <div class="col-lg-6 col-12">
+        <h1>Products</h1>
+
+        <p>This component demonstrates fetching data from the server.</p>
+    </div>
+    
+    <div class="col-lg-6 col-12 text-end">
+        <button class="btn btn-info">
+            Create Product &nbsp; <i class="oi oi-plus"></i>
+        </button>
+    </div>
+</section>
+
+<section class="row">
+    @if (!Products.Any())
+    {
+        <div class="spinner-border"></div>
+    }
+    else
+    {
+        @foreach (var product in Products)
+        {
+            <div class="col-lg-3">
+                <ProductCard Product="product" />
+            </div>
+        }
+    }
+</section>

@@ -1,10 +1,8 @@
-﻿using Moby.Web.Shared.Models;
-
-namespace Moby.Web.Client.Services.IServices;
+﻿namespace Moby.Web.Client.Services.IServices;
 
 public interface IBaseService : IDisposable
 {
-    Task<HttpClient> HttpClient(string baseUrl, string service);
+    Task<HttpClient> HttpClient();
 
-    Task<Token> GetAccessTokenAsync(string service);
+    Task<TokenModel> GetAccessTokenAsync();
 }

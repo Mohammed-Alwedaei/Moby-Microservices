@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
-using Moby.Web.Client.Services.IServices;
-using Moby.Web.Shared.Models.Cart;
-using Newtonsoft.Json;
-
-namespace Moby.Web.Client.Pages.Cart;
+﻿namespace Moby.Web.Client.Pages.Cart;
 
 public partial class Index
 {

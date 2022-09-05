@@ -1,9 +1,11 @@
-﻿@page "/authentication/{action}"
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using Microsoft.Extensions.Configuration
+﻿@*
+    Page: Authenticate a user
+    Authorization Level: Customer
+    Purpose: Authenticate a user and redirect options
+    Data to be collected: ----
+*@
 
-@inject NavigationManager Navigation
-@inject IConfiguration Configuration
+@page "/authentication/{action}"
 
 <RemoteAuthenticatorView Action="@Action">
     <LogOut>
@@ -15,7 +17,3 @@
         }
     </LogOut>
 </RemoteAuthenticatorView>
-
-@code{
-    [Parameter] public string Action { get; set; }
-}

@@ -1,4 +1,10 @@
-﻿@page "/cart/checkout"
+﻿@*
+    Page: Checkout 
+    Purpose: Display a form with a list of products in the cart
+    Data to be collected: Cart Dto
+*@
+
+@page "/cart/checkout"
 
 @if (!_isLoading)
 {
@@ -8,9 +14,11 @@
             <p class="mb-0">@_errorMessage</p>
         </div>
     }
+
     <EditForm Model="_cart" OnValidSubmit="BeginCheckoutFlow">
         <div>
             <span style="font-size:25px;" class="text-warning">Enter details and place order :</span>
+
             <br />
         </div>
 
@@ -58,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-5">
                     <div class="card mt-4">
                         <div class="card-body">
@@ -78,8 +87,6 @@
 
                             <hr />
 
-
-
                             @foreach (var cartDetail in _cart.CartDetails)
                             {
                                 <div class="row h-100">
@@ -91,6 +98,7 @@
                                         <span style="font-size:17px;">@cartDetail.Product.Price.ToString("c")</span>
 
                                     </div>
+
                                     <div class="col-3" style="font-size:11px;">
                                         <span style="font-size:17px;">@cartDetail.Count</span>
                                     </div>
@@ -105,9 +113,9 @@
                             </div>
 
                         </div>
+
                         <div class="card-footer">
                             <div class="row">
-
                                 <div class="col-12 ">
                                     <button type="submit" class="btn btn-success form-control ">
                                         Place order

@@ -1,11 +1,10 @@
-﻿@page "/Products/Create"
+﻿@*
+    Page: Create a new product
+    Purpose: Display a form with a list of products in the cart
+    Data to be collected: Cart Dto
+*@
 
-@attribute [Authorize]
-
-@inject IProductService ProductService
-@inject ITokenService TokenService
-
-@inject NavigationManager NavigationManager
+@page "/Products/Create"
 
 <PageTitle>Our Products</PageTitle>
 
@@ -48,18 +47,3 @@
         <button class="btn btn-primary">Submit</button>
     </div>
 </EditForm>
-
-
-@code {
-    private ProductDto Product = new();
-
-    private async Task BeginProductCreate()
-    {
-
-        var token = await TokenService.GetTokenAsync("Products");
-        var response = await ProductService.CreateProductAsync(Product);
-
-        if(response is true)
-            NavigationManager.NavigateTo("/Products?alert=success&title=Product Created");
-    }
-}

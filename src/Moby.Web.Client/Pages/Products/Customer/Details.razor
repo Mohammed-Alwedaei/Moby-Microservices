@@ -1,0 +1,32 @@
+﻿@*
+    Page: Get a product
+    Authorization Level: Customer
+    Purpose: Display a the details of the requested product
+    Data to be collected: (Optional) Product count - based to 1
+*@
+
+@page "/products/details"
+
+<PageTitle>Moby || Product</PageTitle>
+
+<section class="row"> 
+    <div class="col-lg-6 col-md-12">
+        <h3>@_product.Name</h3>
+
+        <p>@((MarkupString)_product.Description))</p>
+
+        <EditForm Model="Cart" 
+                  OnValidSubmit="BeginAddToCartFlow">
+            <InputNumber class="form-control form-control-lg" 
+                         @bind-Value="Cart.Count" />
+
+            <div class="my-3">
+                <button class="btn btn-primary">Add to cart</button>
+            </div>
+        </EditForm>
+    </div>
+    
+    <div class="col-lg-6 col-md-12">
+        <img class="img-fluid rounded-3" src="@_product.ImageUrl" />
+    </div>
+</section>

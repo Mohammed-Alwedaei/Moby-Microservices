@@ -1,11 +1,4 @@
-﻿using System.Net.Http.Json;
-using Moby.Web.Client.Services.IServices;
-using Moby.Web.Shared;
-using Moby.Web.Shared.Models;
-using Moby.Web.Shared.Models.Cart;
-using Newtonsoft.Json;
-
-namespace Moby.Web.Client.Services;
+﻿namespace Moby.Web.Client.Services;
 
 public class CouponService : BaseService, ICouponService
 {
@@ -13,25 +6,23 @@ public class CouponService : BaseService, ICouponService
     private readonly IConfiguration _configuration;
     private readonly ITokenService _tokenService;
 
-    private readonly string _baseUrl;
-    private readonly string _serviceName;
-
     public CouponService(IHttpClientFactory httpClient, 
         IConfiguration configuration, 
-        ITokenService tokenService) : base(httpClient, tokenService)
+        ITokenService tokenService) : base(httpClient, tokenService, configuration)
     {
         _httpClient = httpClient;
         _configuration = configuration;
         _tokenService = tokenService;
-
-        _baseUrl = _configuration.GetValue<string>("GatewayUrl");
-
-        _serviceName = "Coupons";
     }
 
+    /// <summary>
+    /// Get coupon by coupon code 
+    /// </summary>
+    /// <param name="couponCode"></param>
+    /// <returns>CouponDto</returns>
     public async Task<CouponDto> GetCouponByCodeNameAsync(string couponCode)
     {
-        var client = await HttpClient(_baseUrl, _serviceName);
+        var client = await HttpClient();
 
         var response = await client.GetFromJsonAsync<ResponseDto>($"/api/coupons/{couponCode}");
 
@@ -41,6 +32,5 @@ public class CouponService : BaseService, ICouponService
         }
 
         return JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Results));
-
     }
 }

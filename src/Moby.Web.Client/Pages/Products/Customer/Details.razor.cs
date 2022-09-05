@@ -1,59 +1,54 @@
-﻿@page "/Products/Details"
-@using Moby.Web.Shared.Models.Cart
-@using Moby.Web.Shared
-@using Moby.Web.Shared.Models.Cart.Post
+﻿namespace Moby.Web.Client.Pages.Products.Customer;
 
+public partial class Details
+{
+    [Inject]
+    IProductService ProductService { get; set; }
 
-@inject IProductService ProductService
-@inject ITokenService TokenService
-@inject IShoppingCartService ShoppingCartService
-@inject AuthenticationStateProvider AuthenticationState
-@inject NavigationManager NavigationManager
+    [Inject]
+    IShoppingCartService ShoppingCartService { get; set; }
 
-<section class="row"> 
-    <div class="col-lg-6 col-md-12">
-        <h3>@_product.Name</h3>
-        <p>@((MarkupString)_product.Description))</p>
+    [Inject]
+    AuthenticationStateProvider AuthenticationState { get; set; }
 
-        <EditForm Model="Cart" OnValidSubmit="BeginAddToCartFlow">
-            <InputNumber class="form-control form-control-lg" 
-                         @bind-Value="Cart.Count" />
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
 
-            <div class="my-3">
-                <button class="btn btn-primary">Add to cart</button>
-            </div>
-        </EditForm>
-        
-        
-    </div>
-    
-    <div class="col-lg-6 col-md-12">
-        <img class="img-fluid rounded-3" src="@_product.ImageUrl" />
-    </div>
-</section>
-
-@code {
     [Parameter]
     [SupplyParameterFromQuery(Name = "productid")]
+
     public int ProductId { get; set; }
 
     private ProductDto _product = new();
 
     private CartDetails Cart = new();
 
+    /// <summary>
+    /// Call BeginAddToCartFlow() to get a product on component initialization
+    /// </summary>
+    /// <returns></returns>
     protected override async Task OnInitializedAsync()
     {
         _product = await ProductService.GetProductByIdAsync(ProductId);
     }
 
+    /// <summary>
+    /// Add Product to cart
+    /// </summary>
+    /// <returns></returns>
     private async Task BeginAddToCartFlow()
     {
         var cart = new PostCartDto
         {
             CartHeader = new()
             {
-                UserId = AuthenticationState.GetAuthenticationStateAsync()
-                    .Result.User.Claims.FirstOrDefault(u => u.Type == "sub")!.Value
+                UserId = AuthenticationState
+                    .GetAuthenticationStateAsync()
+                    .Result
+                    .User
+                    .Claims
+                    .FirstOrDefault(u => u.Type == "sub")
+                    !.Value
             }
         };
 
@@ -79,8 +74,6 @@
         cartDetailsDto.Add(cartDetails);
 
         cart.CartDetails = cartDetailsDto;
-
-        var shoppingCartAccessToken = await TokenService.GetTokenAsync(ApiRoutes.Carts);
 
         var shoppingCartResponse = await ShoppingCartService.CreateCartAsync(cart);
 

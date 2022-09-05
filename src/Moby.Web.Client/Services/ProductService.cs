@@ -1,13 +1,4 @@
-﻿using Moby.Web.Shared;
-using Moby.Web.Client.Services.IServices;
-using Moby.Web.Shared.Models;
-using System.Net.Http.Json;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-
-namespace Moby.Web.Client.Services;
+﻿namespace Moby.Web.Client.Services;
 
 public class ProductService : BaseService, IProductService
 {
@@ -15,21 +6,23 @@ public class ProductService : BaseService, IProductService
     private readonly IConfiguration _configuration;
     private readonly ITokenService _tokenService;
 
-    private readonly string _baseUrl;
-
-    public ProductService(IHttpClientFactory httpClient, IConfiguration configuration, ITokenService tokenService) : base(httpClient, tokenService)
+    public ProductService(IHttpClientFactory httpClient, 
+        IConfiguration configuration, 
+        ITokenService tokenService) : base(httpClient, tokenService, configuration)
     {
         _httpClient = httpClient;
         _configuration = configuration;
         _tokenService = tokenService;
-
-        _baseUrl = _configuration.GetValue<string>("GatewayUrl");
-
     }
 
+    /// <summary>
+    /// Get a product by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>ProductDto</returns>
     public async Task<ProductDto> GetProductByIdAsync(int id)
     {
-        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+        var client = await HttpClient();
 
         var response = await client.GetFromJsonAsync<ResponseDto>($"/api/products/{id}");
 
@@ -41,9 +34,13 @@ public class ProductService : BaseService, IProductService
         return JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Results));
     }
 
+    /// <summary>
+    /// Get a list of products
+    /// </summary>
+    /// <returns>List of ProductDto</returns>
     public async Task<List<ProductDto>> GetProductsAsync()
     {
-        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+        var client = await HttpClient();
 
         var response = await client
             .GetFromJsonAsync<ResponseDto>("/api/products");
@@ -56,9 +53,14 @@ public class ProductService : BaseService, IProductService
         return JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Results));
     }
 
+    /// <summary>
+    /// Create a product
+    /// </summary>
+    /// <param name="product"></param>
+    /// <returns>An indicator whether the products is updated or not</returns>
     public async Task<bool> CreateProductAsync(ProductDto product)
     {
-        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+        var client = await HttpClient();
 
         var response = await client
             .PostAsJsonAsync("/api/products", product);
@@ -71,9 +73,14 @@ public class ProductService : BaseService, IProductService
         return true;
     }
 
+    /// <summary>
+    /// Update a product
+    /// </summary>
+    /// <param name="product"></param>
+    /// <returns>An indicator whether the products is updated or not</returns>
     public async Task<bool> UpdateProductAsync(ProductDto product)
     {
-        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+        var client = await HttpClient();
 
         var response = await client
             .PutAsJsonAsync("/api/products", product);
@@ -86,9 +93,14 @@ public class ProductService : BaseService, IProductService
         return true;
     }
 
+    /// <summary>
+    /// Delete a product by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>An indicator whether the products is updated or not</returns>
     public async Task<bool> DeleteProductAsync(int id)
     {
-        var client = await HttpClient(_baseUrl, ApiRoutes.Products);
+        var client = await HttpClient();
 
         var response = await client
             .DeleteAsync($"/api/products/{id}");

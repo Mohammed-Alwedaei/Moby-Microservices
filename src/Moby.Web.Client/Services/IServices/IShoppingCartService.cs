@@ -1,7 +1,4 @@
-﻿using Moby.Web.Shared.Models.Cart;
-using Moby.Web.Shared.Models.Cart.Post;
-
-namespace Moby.Web.Client.Services.IServices;
+﻿namespace Moby.Web.Client.Services.IServices;
 
 public interface IShoppingCartService
 {
