@@ -8,7 +8,7 @@
 
 <h3>Cart</h3>
 
-@if (!_isLoading)
+@if (!_isLoading && _cart is not null)
 {
     <form method="post">
         <br />
@@ -71,9 +71,9 @@
                             </div>
 
                             <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
-                                <a class="btn btn-outline-danger">
+                                <button class="btn btn-outline-danger">
                                     <i class="oi oi-trash" @onclick="() => RemoveProductFromCart(detail.Id)"></i>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     }
@@ -131,4 +131,8 @@
             </div>
         </div>
     </form>
+}
+else
+{
+    <p>Add product in the cart</p>
 }

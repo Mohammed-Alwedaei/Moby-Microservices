@@ -60,36 +60,45 @@ public partial class Index
             .Result.User.Claims
             .FirstOrDefault(c => c.Type == "sub")?.Value;
 
-        var shoppingCartResponse = await ShoppingCartService.GetCartByUserIdAsync(userId);
-
-        if (shoppingCartResponse is not null)
+        try
         {
-            cart = shoppingCartResponse;
+            var shoppingCartResponse = await ShoppingCartService.GetCartByUserIdAsync(userId);
 
-            if (cart.CartHeader is null && !cart.CartDetails.Any())
+            if (shoppingCartResponse is not null)
             {
-                cart = new();
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+                cart = shoppingCartResponse;
+
+                if (cart.CartHeader is null && !cart.CartDetails.Any())
                 {
-                    _couponDto = await CouponService.GetCouponByCodeNameAsync(cart.CartHeader.CouponCode);
-                    var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
-                    cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
-                    _hasDiscountCoupon = true;
+                    cart = new();
                 }
                 else
                 {
-                    cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
-                    _hasDiscountCoupon = false;
+                    if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+                    {
+                        _couponDto = await CouponService.GetCouponByCodeNameAsync(cart.CartHeader.CouponCode);
+                        var totalPrice = CalculateTotalCartPrice(cart.CartDetails);
+                        cart.CartHeader.Total = totalPrice - _couponDto.DiscountAmount;
+                        _hasDiscountCoupon = true;
+                    }
+                    else
+                    {
+                        cart.CartHeader.Total = CalculateTotalCartPrice(cart.CartDetails);
+                        _hasDiscountCoupon = false;
+                    }
                 }
             }
+
+            _isLoading = false;
+
+            _cart = cart;
         }
+        catch (Exception)
+        {
+            _isLoading = false;
 
-        _isLoading = false;
-
-        _cart = cart;
+            _cart = new();
+        }
     }
 
     private decimal CalculateTotalCartPrice(IEnumerable<CartDetailsDto> cartDetailsDtos)
