@@ -15,5 +15,5 @@ This project is about building a Web shop based on microservices architecture. U
   - Microsoft SQL Server 
   
 ## Development & Coding
-This project was developed by [Bhurgen](https://github.com/Bhurgen) in His Microservices course at Udemy.
+This project was developed by [Bhurgen](https://github.com/bhrugen) in His Microservices course at Udemy.
 In this reporisoty I take the mission of applying this course using Blazor WASM and implement it in my own way.
