@@ -24,7 +24,7 @@ public class CouponService : BaseService, ICouponService
         _configuration = configuration;
         _tokenService = tokenService;
 
-        _baseUrl = _configuration.GetValue<string>("ServicesUrls:Coupons.API");
+        _baseUrl = _configuration.GetValue<string>("GatewayUrl");
 
         _serviceName = "Coupons";
     }

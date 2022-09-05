@@ -80,12 +80,14 @@ builder.Services.AddAuthentication("Bearer")
             ValidAudience = builder.Configuration["Auth0:Audience"],
             ValidIssuer = $"https://{builder.Configuration["Auth0:Domain"]}"
         };
+
+        options.TokenValidationParameters.ValidateAudience = false;
     });
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ReadAccess", policy =>
-        policy.RequireClaim("scope", "read:products"));
+        policy.RequireClaim("scope", "read:gateway"));
 
 });
 

@@ -20,6 +20,8 @@ public class TokenService : ITokenService
     {
         try
         {
+            _logger.LogInformation("Base address is: {address}", _httpClient.BaseAddress);
+
             var token = await _httpClient.GetFromJsonAsync<Token>($"/api/GetToken/{targetApi}");
 
             if (token.AccessToken is not null)

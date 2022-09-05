@@ -77,17 +77,19 @@ builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}";
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidAudience = builder.Configuration["Auth0:Audience"],
             ValidIssuer = $"https://{builder.Configuration["Auth0:Domain"]}"
         };
+
     });
 
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ReadAccess", policy =>
-        policy.RequireClaim("scope", "read:carts"));
+        policy.RequireClaim("scope", "read:gateway"));
 });
 
 builder.Services.AddCors(options =>

@@ -26,7 +26,7 @@ public class ShoppingCartService : BaseService, IShoppingCartService
         _configuration = configuration;
         _tokenService = tokenService;
 
-        _baseUrl = _configuration.GetValue<string>("ServicesUrls:ShoppingCart.API");
+        _baseUrl = _configuration.GetValue<string>("GatewayUrl");
 
         _serviceName = ApiRoutes.Carts;
     }

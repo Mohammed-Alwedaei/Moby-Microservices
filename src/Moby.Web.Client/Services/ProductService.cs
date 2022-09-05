@@ -23,7 +23,7 @@ public class ProductService : BaseService, IProductService
         _configuration = configuration;
         _tokenService = tokenService;
 
-        _baseUrl = _configuration.GetValue<string>("ServicesUrls:Products.API");
+        _baseUrl = _configuration.GetValue<string>("GatewayUrl");
 
     }
 

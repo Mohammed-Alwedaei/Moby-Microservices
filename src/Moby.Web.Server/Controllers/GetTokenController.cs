@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Moby.Web.Shared;
 using Moby.Web.Shared.Models;
 using Newtonsoft.Json;
 
@@ -36,20 +35,7 @@ public class GetTokenController : ControllerBase
 
         };
 
-        switch (issueTokenFor)
-        {
-            case ApiRoutes.Products:
-                parameters.Add("audience", _configuration["Audiences:Products.API"]);
-                break;
-
-            case ApiRoutes.Carts:
-                parameters.Add("audience", _configuration["Audiences:Carts.API"]);
-                break;
-
-            default:
-                parameters.Add("audience", _configuration["Audiences:Master.API"]);
-                break;
-        }
+        parameters.Add("audience", _configuration["Audiences:Gateway"]);
 
         var content = new FormUrlEncodedContent(parameters.Select(p => new KeyValuePair<string, string>(p.Key, p.Value?.ToString() ?? "")));
 
